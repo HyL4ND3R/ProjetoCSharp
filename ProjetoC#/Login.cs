@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace ProjetoC_
 {
     public partial class Login : Form
@@ -9,7 +11,9 @@ namespace ProjetoC_
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-
+            if (txtLogin.Text == "") {
+                
+            } 
         }
     }
 }
