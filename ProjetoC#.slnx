@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../WebService/WebServiceUniversal/WebServiceUniversal/WebServiceUniversal.csproj" />
   <Project Path="ProjetoC#/ProjetoC#.csproj" />
 </Solution>
