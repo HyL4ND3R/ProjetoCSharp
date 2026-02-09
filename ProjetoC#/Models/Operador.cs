@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ProjetoC_.Classes
 {
-    internal class Operador
+    public class Operador
     {
         public int Codigo { get; set; }
         public string Nome { get; set; }

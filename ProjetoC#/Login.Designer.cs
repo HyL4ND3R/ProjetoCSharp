@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             btnEntrar = new Button();
-            label1 = new Label();
+            lblTitulo = new Label();
             txtLogin = new TextBox();
             txtSenha = new TextBox();
-            label2 = new Label();
-            label3 = new Label();
+            lblLogin = new Label();
+            lblSenha = new Label();
             SuspendLayout();
             // 
             // btnEntrar
             // 
             btnEntrar.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnEntrar.Location = new Point(119, 209);
+            btnEntrar.Location = new Point(104, 200);
             btnEntrar.Name = "btnEntrar";
-            btnEntrar.Size = new Size(86, 33);
+            btnEntrar.Size = new Size(125, 33);
             btnEntrar.TabIndex = 0;
             btnEntrar.Text = "Entrar";
             btnEntrar.Click += btnEntrar_Click;
             // 
-            // label1
+            // lblTitulo
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(113, 22);
-            label1.Name = "label1";
-            label1.Size = new Size(101, 32);
-            label1.TabIndex = 1;
-            label1.Text = "LOGIN";
+            lblTitulo.Font = new Font("Arial", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitulo.Location = new Point(0, 24);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(320, 32);
+            lblTitulo.TabIndex = 1;
+            lblTitulo.Text = "LOGIN";
+            lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // txtLogin
             // 
@@ -63,6 +63,7 @@
             txtLogin.Name = "txtLogin";
             txtLogin.Size = new Size(164, 26);
             txtLogin.TabIndex = 2;
+            txtLogin.KeyPress += txtLogin_KeyPress;
             // 
             // txtSenha
             // 
@@ -71,39 +72,38 @@
             txtSenha.Name = "txtSenha";
             txtSenha.Size = new Size(164, 26);
             txtSenha.TabIndex = 3;
+            txtSenha.KeyPress += txtSenha_KeyPress;
             // 
-            // label2
+            // lblLogin
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(45, 98);
-            label2.Name = "label2";
-            label2.Size = new Size(51, 18);
-            label2.TabIndex = 4;
-            label2.Text = "Login:";
-            label2.TextAlign = ContentAlignment.MiddleRight;
+            lblLogin.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblLogin.Location = new Point(40, 96);
+            lblLogin.Name = "lblLogin";
+            lblLogin.Size = new Size(56, 24);
+            lblLogin.TabIndex = 4;
+            lblLogin.Text = "Login:";
+            lblLogin.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // label3
+            // lblSenha
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(39, 147);
-            label3.Name = "label3";
-            label3.Size = new Size(57, 18);
-            label3.TabIndex = 5;
-            label3.Text = "Senha:";
-            label3.TextAlign = ContentAlignment.MiddleRight;
+            lblSenha.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSenha.Location = new Point(40, 144);
+            lblSenha.Name = "lblSenha";
+            lblSenha.Size = new Size(57, 24);
+            lblSenha.TabIndex = 5;
+            lblSenha.Text = "Senha:";
+            lblSenha.TextAlign = ContentAlignment.MiddleRight;
             // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(333, 305);
-            Controls.Add(label3);
-            Controls.Add(label2);
+            ClientSize = new Size(321, 287);
+            Controls.Add(lblSenha);
+            Controls.Add(lblLogin);
             Controls.Add(txtSenha);
             Controls.Add(txtLogin);
-            Controls.Add(label1);
+            Controls.Add(lblTitulo);
             Controls.Add(btnEntrar);
             Name = "Login";
             Text = "Login";
@@ -114,10 +114,10 @@
         #endregion
 
         private Button btnEntrar;
-        private Label label1;
+        private Label lblTitulo;
         private TextBox txtLogin;
         private TextBox txtSenha;
-        private Label label2;
-        private Label label3;
+        private Label lblLogin;
+        private Label lblSenha;
     }
 }

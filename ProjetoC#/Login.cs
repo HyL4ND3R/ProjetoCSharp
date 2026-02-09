@@ -15,6 +15,7 @@ namespace ProjetoC_
 
         // Instancia o serviço
         private readonly DatabaseService _dbService;
+        public static Operador operadorLogado { get; private set; } = null;
 
         public Login()
         {
@@ -30,15 +31,21 @@ namespace ProjetoC_
                 MessageBox.Show("Preencha usuário e senha.");
                 return;
             }
+            else if (int.TryParse(txtLogin.Text, out int codigo) == false)
+            {
+                MessageBox.Show("Login Inválido.");
+                return;
+            }
+
 
             try
             {
                 // 2. Prepara os dados (Apenas SQL e Parametros)
                 string query = "SELECT Codigo, Nome FROM Operador WHERE Codigo = @Usuario AND Senha = @Senha";
-                
+
                 var parametros = new Dictionary<string, object>
                 {
-                    { "@Usuario", txtLogin.Text },
+                    { "@Usuario", int.Parse(txtLogin.Text) },
                     { "@Senha", txtSenha.Text }
                 };
 
@@ -53,9 +60,9 @@ namespace ProjetoC_
                 // 5. Verifica o resultado
                 if (resultado != null && resultado.Count > 0)
                 {
-                    var operador = resultado[0];
-                    MessageBox.Show($"Bem-vindo, {operador.Nome}!");
-                    
+                    operadorLogado = resultado[0];
+                    MessageBox.Show($"Bem-vindo, {operadorLogado.Nome}!");
+
                     // this.Hide();
                     // new FormPrincipal().Show();
                 }
@@ -73,6 +80,30 @@ namespace ProjetoC_
                 // Restaura o botão mesmo se der erro
                 btnEntrar.Enabled = true;
                 btnEntrar.Text = "Entrar";
+            }
+        }
+
+
+        private void txtLogin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permite apenas números e controle (backspace)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignora a tecla pressionada
+            }
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                txtSenha.Focus(); // Move o foco para a senha
+                e.Handled = true; // Evita o som de "beep"
+            }
+        }
+
+        private void txtSenha_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnEntrar.Focus(); // Move o foco para a senha
+                e.Handled = true; // Evita o som de "beep"
             }
         }
     }
