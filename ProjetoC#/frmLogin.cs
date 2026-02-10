@@ -10,14 +10,14 @@ using System.Windows.Forms; // Se for WPF, remova isso
 
 namespace ProjetoC_
 {
-    public partial class Login : Form
+    public partial class frmLogin : Form
     {
 
         // Instancia o serviço
         private readonly DatabaseService _dbService;
         public static Operador operadorLogado { get; private set; } = null;
 
-        public Login()
+        public frmLogin()
         {
             InitializeComponent();
             _dbService = new DatabaseService();
@@ -36,7 +36,6 @@ namespace ProjetoC_
                 MessageBox.Show("Login Inválido.");
                 return;
             }
-
 
             try
             {
@@ -60,11 +59,10 @@ namespace ProjetoC_
                 // 5. Verifica o resultado
                 if (resultado != null && resultado.Count > 0)
                 {
-                    operadorLogado = resultado[0];
-                    MessageBox.Show($"Bem-vindo, {operadorLogado.Nome}!");
-
-                    // this.Hide();
-                    // new FormPrincipal().Show();
+                    this.Hide(); // Esconde o login
+                    frmPrincipal principal = new frmPrincipal();
+                    principal.ShowDialog(); // Abre o principal
+                    this.Close(); // Fecha o login de vez ao sair do principal
                 }
                 else
                 {
@@ -82,7 +80,6 @@ namespace ProjetoC_
                 btnEntrar.Text = "Entrar";
             }
         }
-
 
         private void txtLogin_KeyPress(object sender, KeyPressEventArgs e)
         {

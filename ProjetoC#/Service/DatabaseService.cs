@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Http.Json;
 using System.Text.Json;
+using ProjetoC_.Security;
 
 namespace ProjetoC_.Service
 {
@@ -23,10 +24,13 @@ namespace ProjetoC_.Service
         {
             try
             {
+
+                string queryCriptografada = Criptografia.Criptografar(query);
+
                 // Monta o objeto que a API espera
                 var pacoteEnvio = new
                 {
-                    Query = query, // Certifique-se que o nome bate com a API (Query ou SqlQuery)
+                    Query = queryCriptografada, // Certifique-se que o nome bate com a API (Query ou SqlQuery)
                     Parametros = parametros ?? new Dictionary<string, object>()
                 };
 
