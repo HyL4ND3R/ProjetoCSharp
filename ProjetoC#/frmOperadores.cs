@@ -13,7 +13,7 @@ namespace ProjetoC_
     public partial class frmOperadores : Form
     {
 
-        private List<Operador> _listaOperadores;
+        private List<Operador>? _listaOperadores = null;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
 
@@ -121,7 +121,56 @@ namespace ProjetoC_
         }
         private void toolGravar_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                validaCampos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro de validação: " + ex.Message);
+                return;
+            }
+
+            try
+            {
+                OperadorService operadorService = new OperadorService();
+                Operador novoOperador = new Operador
+                {
+                    Nome = txtNome.Text,
+                    Senha = txtSenha.Text,
+                    Admin = chkAdmin.Checked ? (byte) 1 : (byte) 0,
+                    Inativo = chkInativo.Checked ? (byte) 1 : (byte) 0
+                };
+
+                if (int.TryParse(txtCodigo.Text, out int codigo))
+                {
+                    novoOperador.Codigo = codigo;
+                }
+                else                
+                {
+                    novoOperador.Codigo = 0; // Código 0 para novos registros, o banco deve gerar o código real
+                }
+
+                if (txtCodigo.Enabled == false) // Inclusão
+                {
+                    operadorService.InserirOperador(novoOperador);
+                    _listaOperadores.Add(novoOperador);
+                    _indiceAtual = _listaOperadores.Count - 1; // Posiciona no novo registro
+                }
+                else // Alteração
+                {
+                    novoOperador.Codigo = int.Parse(txtCodigo.Text);
+                    operadorService.AtualizarOperador(novoOperador);
+                    _listaOperadores[_indiceAtual] = novoOperador;
+                }
+                modoConsulta();
+                preencherCampos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao gravar operador: " + ex.Message);
+            }
+
         }
         private void toolAlterar_Click(object sender, EventArgs e)
         {
@@ -129,11 +178,44 @@ namespace ProjetoC_
         }
         private void toolExcluir_Click(object sender, EventArgs e)
         {
-            
+
         }
         private void toolDesfazer_Click(object sender, EventArgs e)
         {
             modoConsulta();
+            preencherCampos();
+        }
+        private void toolPrimeiro_Click(object sender, EventArgs e)
+        {
+            if (_listaOperadores.Count > 0)
+            {
+                _indiceAtual = 0;
+                preencherCampos();
+            }
+        }
+        private void toolAnterior_Click(object sender, EventArgs e)
+        {
+            if (_indiceAtual > 0)
+            {
+                _indiceAtual--;
+                preencherCampos();
+            }
+        }
+        private void toolProximo_Click(object sender, EventArgs e)
+        {
+            if (_indiceAtual < _listaOperadores.Count - 1)
+            {
+                _indiceAtual++;
+                preencherCampos();
+            }
+        }
+        private void toolUltimo_Click(object sender, EventArgs e)
+        {
+            if (_listaOperadores.Count > 0)
+            {
+                _indiceAtual = _listaOperadores.Count - 1;
+                preencherCampos();
+            }
         }
 
         private void preencherCampos()
@@ -154,7 +236,6 @@ namespace ProjetoC_
                 limparCampos();
             }
         }
-
         private void limparCampos()
         {
             txtCodigo.Text = "";
@@ -164,40 +245,25 @@ namespace ProjetoC_
             chkInativo.Checked = false;
             lblContagem.Text = "0 de 0";
         }
-
-        private void toolPrimeiro_Click(object sender, EventArgs e)
+        private void txtCodigo_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (_listaOperadores.Count > 0)
+            // Permitir apenas números e controle de backspace
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
-                _indiceAtual = 0;
-                preencherCampos();
+                e.Handled = true; // Ignora o caractere
             }
         }
 
-        private void toolAnterior_Click(object sender, EventArgs e)
+        private void validaCampos()
         {
-            if (_indiceAtual > 0)
+            if (string.IsNullOrWhiteSpace(txtNome.Text))
             {
-                _indiceAtual--;
-                preencherCampos();
+                throw new Exception("O campo Nome é obrigatório.");
             }
-        }
 
-        private void toolProximo_Click(object sender, EventArgs e)
-        {
-            if (_indiceAtual < _listaOperadores.Count - 1)
+            if (String.IsNullOrWhiteSpace(txtSenha.Text))
             {
-                _indiceAtual++;
-                preencherCampos();
-            }
-        }
-
-        private void toolUltimo_Click(object sender, EventArgs e)
-        {
-            if (_listaOperadores.Count > 0)
-            {
-                _indiceAtual = _listaOperadores.Count - 1;
-                preencherCampos();
+                throw new Exception("O campo Senha é obrigatório.");
             }
         }
     }

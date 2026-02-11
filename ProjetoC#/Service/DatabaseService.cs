@@ -15,11 +15,11 @@ namespace ProjetoC_.Service
 
         public DatabaseService()
         {
-            // Idealmente, isso viria de um arquivo de configuração, mas por enquanto:
+            // Transformar em um arquivo de configuração depois
             _urlApi = "http://localhost:5288/api/database/executar";
         }
 
-        // 2. Método Genérico <T>: Funciona para Operador, Produto, Cliente, etc.
+        // 2. Método Genérico List<T>: Passar o objeto pelo <t>, usado para Consultas.
         public async Task<List<T>> ExecutarConsultaAsync<T>(string query, Dictionary<string, object> parametros = null)
         {
             try
@@ -60,6 +60,40 @@ namespace ProjetoC_.Service
             catch (Exception ex)
             {
                 // Repassa o erro para quem chamou tratar (ex: mostrar MessageBox)
+                throw new Exception($"Falha na comunicação: {ex.Message}");
+            }
+        }
+
+        /* 2. Método Genérico <T>: Passar o objeto de retorno pelo <t> (RespostaComando para pegar o numero de linhas afetadas), 
+         * usado para Comandos (INSERT, UPDATE, DELETE).*/
+        public async Task<T> ExecutarComandoAsync<T>(string query, Dictionary<string, object> parametros = null)
+        {
+            try
+            {
+                string queryCriptografada = Criptografia.Criptografar(query);
+                var pacoteEnvio = new
+                {
+                    Query = queryCriptografada,
+                    Parametros = parametros ?? new Dictionary<string, object>()
+                };
+                var response = await _client.PostAsJsonAsync(_urlApi, pacoteEnvio);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonResposta = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    return JsonSerializer.Deserialize<T>(jsonResposta, options);
+                }
+                else
+                {
+                    var erroMsg = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Erro na API ({response.StatusCode}): {erroMsg}");
+                }
+            }
+            catch (Exception ex)
+            {
                 throw new Exception($"Falha na comunicação: {ex.Message}");
             }
         }
