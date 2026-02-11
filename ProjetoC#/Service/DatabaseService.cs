@@ -37,25 +37,23 @@ namespace ProjetoC_.Service
                 // Envia
                 var response = await _client.PostAsJsonAsync(_urlApi, pacoteEnvio);
 
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    var jsonResposta = await response.Content.ReadAsStringAsync();
-
-                    // Configuração para ignorar maiúsculas/minúsculas (ex: CODIGO vs Codigo)
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
-
-                    // Transforma o JSON na lista do tipo T (ex: List<Operador>)
-                    return JsonSerializer.Deserialize<List<T>>(jsonResposta, options);
-                }
-                else
-                {
-                    // Você pode optar por lançar erro ou retornar null
+                    // da pra optar por lançar erro ou retornar null
                     var erroMsg = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Erro na API ({response.StatusCode}): {erroMsg}");
                 }
+
+                var jsonResposta = await response.Content.ReadAsStringAsync();
+
+                // Configuração para ignorar maiúsculas/minúsculas (ex: CODIGO vs Codigo)
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                // Transforma o JSON na lista do tipo T (ex: List<Operador>)
+                return JsonSerializer.Deserialize<List<T>>(jsonResposta, options);
             }
             catch (Exception ex)
             {

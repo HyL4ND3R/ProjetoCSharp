@@ -69,10 +69,10 @@
             toolNovo.Image = (Image)resources.GetObject("toolNovo.Image");
             toolNovo.ImageScaling = ToolStripItemImageScaling.None;
             toolNovo.ImageTransparentColor = Color.Magenta;
-            toolNovo.Margin = new Padding(0, 3, 0, 0);
+            toolNovo.Margin = new Padding(0, 3, 0, 5);
             toolNovo.Name = "toolNovo";
             toolNovo.Padding = new Padding(5, 0, 0, 0);
-            toolNovo.Size = new Size(41, 45);
+            toolNovo.Size = new Size(41, 40);
             toolNovo.Click += toolNovo_Click;
             // 
             // toolGravar
@@ -81,10 +81,10 @@
             toolGravar.Image = (Image)resources.GetObject("toolGravar.Image");
             toolGravar.ImageScaling = ToolStripItemImageScaling.None;
             toolGravar.ImageTransparentColor = Color.Magenta;
-            toolGravar.Margin = new Padding(0, 3, 0, 0);
+            toolGravar.Margin = new Padding(0, 3, 0, 5);
             toolGravar.Name = "toolGravar";
             toolGravar.Padding = new Padding(5, 0, 0, 0);
-            toolGravar.Size = new Size(41, 45);
+            toolGravar.Size = new Size(41, 40);
             toolGravar.Click += toolGravar_Click;
             // 
             // toolAlterar
@@ -93,10 +93,10 @@
             toolAlterar.Image = (Image)resources.GetObject("toolAlterar.Image");
             toolAlterar.ImageScaling = ToolStripItemImageScaling.None;
             toolAlterar.ImageTransparentColor = Color.Magenta;
-            toolAlterar.Margin = new Padding(0, 3, 0, 0);
+            toolAlterar.Margin = new Padding(0, 3, 0, 5);
             toolAlterar.Name = "toolAlterar";
             toolAlterar.Padding = new Padding(5, 0, 0, 0);
-            toolAlterar.Size = new Size(41, 45);
+            toolAlterar.Size = new Size(41, 40);
             toolAlterar.Click += toolAlterar_Click;
             // 
             // toolExcluir
@@ -105,10 +105,10 @@
             toolExcluir.Image = (Image)resources.GetObject("toolExcluir.Image");
             toolExcluir.ImageScaling = ToolStripItemImageScaling.None;
             toolExcluir.ImageTransparentColor = Color.Magenta;
-            toolExcluir.Margin = new Padding(0, 3, 0, 0);
+            toolExcluir.Margin = new Padding(0, 3, 0, 5);
             toolExcluir.Name = "toolExcluir";
             toolExcluir.Padding = new Padding(5, 0, 0, 0);
-            toolExcluir.Size = new Size(41, 45);
+            toolExcluir.Size = new Size(41, 40);
             toolExcluir.Click += toolExcluir_Click;
             // 
             // toolDesfazer
@@ -117,10 +117,10 @@
             toolDesfazer.Image = (Image)resources.GetObject("toolDesfazer.Image");
             toolDesfazer.ImageScaling = ToolStripItemImageScaling.None;
             toolDesfazer.ImageTransparentColor = Color.Magenta;
-            toolDesfazer.Margin = new Padding(0, 3, 0, 0);
+            toolDesfazer.Margin = new Padding(0, 3, 0, 5);
             toolDesfazer.Name = "toolDesfazer";
             toolDesfazer.Padding = new Padding(5, 0, 0, 0);
-            toolDesfazer.Size = new Size(41, 45);
+            toolDesfazer.Size = new Size(41, 40);
             toolDesfazer.Text = "toolStripButton1";
             toolDesfazer.Click += toolDesfazer_Click;
             // 
@@ -130,10 +130,10 @@
             toolPrimeiro.Image = (Image)resources.GetObject("toolPrimeiro.Image");
             toolPrimeiro.ImageScaling = ToolStripItemImageScaling.None;
             toolPrimeiro.ImageTransparentColor = Color.Magenta;
-            toolPrimeiro.Margin = new Padding(10, 3, 0, 0);
+            toolPrimeiro.Margin = new Padding(10, 3, 0, 5);
             toolPrimeiro.Name = "toolPrimeiro";
             toolPrimeiro.Padding = new Padding(5, 0, 0, 0);
-            toolPrimeiro.Size = new Size(41, 45);
+            toolPrimeiro.Size = new Size(41, 40);
             toolPrimeiro.Click += toolPrimeiro_Click;
             // 
             // toolAnterior
@@ -142,9 +142,9 @@
             toolAnterior.Image = (Image)resources.GetObject("toolAnterior.Image");
             toolAnterior.ImageScaling = ToolStripItemImageScaling.None;
             toolAnterior.ImageTransparentColor = Color.Magenta;
-            toolAnterior.Margin = new Padding(0, 3, 0, 0);
+            toolAnterior.Margin = new Padding(0, 3, 0, 5);
             toolAnterior.Name = "toolAnterior";
-            toolAnterior.Size = new Size(36, 45);
+            toolAnterior.Size = new Size(36, 40);
             toolAnterior.Click += toolAnterior_Click;
             // 
             // toolProximo
@@ -153,9 +153,9 @@
             toolProximo.Image = (Image)resources.GetObject("toolProximo.Image");
             toolProximo.ImageScaling = ToolStripItemImageScaling.None;
             toolProximo.ImageTransparentColor = Color.Magenta;
-            toolProximo.Margin = new Padding(0, 3, 0, 0);
+            toolProximo.Margin = new Padding(0, 3, 0, 5);
             toolProximo.Name = "toolProximo";
-            toolProximo.Size = new Size(36, 45);
+            toolProximo.Size = new Size(36, 40);
             toolProximo.Click += toolProximo_Click;
             // 
             // toolUltimo
@@ -164,9 +164,9 @@
             toolUltimo.Image = (Image)resources.GetObject("toolUltimo.Image");
             toolUltimo.ImageScaling = ToolStripItemImageScaling.None;
             toolUltimo.ImageTransparentColor = Color.Magenta;
-            toolUltimo.Margin = new Padding(0, 3, 0, 0);
+            toolUltimo.Margin = new Padding(0, 3, 0, 5);
             toolUltimo.Name = "toolUltimo";
-            toolUltimo.Size = new Size(36, 45);
+            toolUltimo.Size = new Size(36, 40);
             toolUltimo.Click += toolUltimo_Click;
             // 
             // lblCodigo

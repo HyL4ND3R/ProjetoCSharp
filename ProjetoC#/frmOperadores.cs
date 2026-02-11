@@ -1,4 +1,5 @@
 ﻿using ProjetoC_.Classes;
+using ProjetoC_.Enums;
 using ProjetoC_.Service;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,10 @@ namespace ProjetoC_
     public partial class frmOperadores : Form
     {
 
-        private List<Operador>? _listaOperadores = null;
+        private List<Operador> _listaOperadores;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
+        private ModoTela _eModoTela;
 
         public frmOperadores()
         {
@@ -24,6 +26,7 @@ namespace ProjetoC_
 
         private async void frmOperadores_Load(object sender, EventArgs e)
         {
+            _listaOperadores = new List<Operador>();
             modoConsulta();
 
             try
@@ -68,6 +71,8 @@ namespace ProjetoC_
             txtSenha.Enabled = false;
             chkAdmin.Enabled = false;
             chkInativo.Enabled = false;
+
+            _eModoTela = ModoTela.Consulta;
         }
 
         private void modoInclusao()
@@ -93,6 +98,8 @@ namespace ProjetoC_
             chkAdmin.Checked = false;
             chkInativo.Enabled = true;
             chkInativo.Checked = false;
+
+            _eModoTela = ModoTela.Inclusao;
         }
 
         private void modoAlteracao()
@@ -113,6 +120,8 @@ namespace ProjetoC_
             txtSenha.Enabled = true;
             chkAdmin.Enabled = true;
             chkInativo.Enabled = true;
+
+            _eModoTela = ModoTela.Alteracao;
         }
 
         private void toolNovo_Click(object sender, EventArgs e)
@@ -138,31 +147,34 @@ namespace ProjetoC_
                 {
                     Nome = txtNome.Text,
                     Senha = txtSenha.Text,
-                    Admin = chkAdmin.Checked ? (byte) 1 : (byte) 0,
-                    Inativo = chkInativo.Checked ? (byte) 1 : (byte) 0
+                    Admin = chkAdmin.Checked ? (byte)1 : (byte)0,
+                    Inativo = chkInativo.Checked ? (byte)1 : (byte)0
                 };
 
                 if (int.TryParse(txtCodigo.Text, out int codigo))
                 {
                     novoOperador.Codigo = codigo;
                 }
-                else                
+                else
                 {
                     novoOperador.Codigo = 0; // Código 0 para novos registros, o banco deve gerar o código real
                 }
-
-                if (txtCodigo.Enabled == false) // Inclusão
-                {
-                    operadorService.InserirOperador(novoOperador);
+                
+                try { 
+                    using var _ = operadorService.GravarOperador(novoOperador);
                     _listaOperadores.Add(novoOperador);
-                    _indiceAtual = _listaOperadores.Count - 1; // Posiciona no novo registro
                 }
-                else // Alteração
+                catch (Exception ex)
                 {
-                    novoOperador.Codigo = int.Parse(txtCodigo.Text);
-                    operadorService.AtualizarOperador(novoOperador);
-                    _listaOperadores[_indiceAtual] = novoOperador;
+                    MessageBox.Show("Erro ao gravar operador no banco: " + ex.Message);
+                    return;
                 }
+
+                if (_eModoTela == ModoTela.Alteracao)
+                    _listaOperadores[_indiceAtual] = novoOperador; // Atualiza o registro existente
+                else
+                    _indiceAtual = _listaOperadores.Count - 1; // Posiciona no novo registro
+
                 modoConsulta();
                 preencherCampos();
             }
