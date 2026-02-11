@@ -36,28 +36,25 @@ namespace ProjetoC_.Service
             return resultado[0];
         }
 
-        public async Task<bool> GravarOperador(Operador operador)
+        public async Task<int> InserirOperador(Operador operador)
         {
-
-            if(operador.Codigo == 0)
-            {
-                String query = "Insert into Operador (Nome, Senha, Admin, Inativo) Values (@Nome, @Senha, @Admin, @Inativo)";
-                var parametros = new Dictionary<string, object>
+            String query = "Insert into Operador (Nome, Senha, Admin, Inativo) Values (@Nome, @Senha, @Admin, @Inativo)";
+            var parametros = new Dictionary<string, object>
             {
                 { "@Nome", operador.Nome },
                 { "@Senha", operador.Senha },
                 { "@Admin", operador.Admin},
                 { "@Inativo", operador.Inativo}
             };
-                var resultado = await _dbService.ExecutarComandoAsync<RespostaComando>(query, parametros);
-                
-                return resultado != null && resultado.linhasAfetadas > 0;
-            }
-            else
-            {
-                String query = "UPDATE Operador Set Nome = @Nome, Senha = @Senha, Admin = @Admin, Inativo = @Inativo" +
+            var resultado = await _dbService.ExecutarComandoAsync<RespostaComando>(query, parametros);
+
+            return resultado != null ? resultado.NovoId : 0;
+        }
+        public async Task<bool> AlterarOperador(Operador operador)
+        {
+            String query = "UPDATE Operador Set Nome = @Nome, Senha = @Senha, Admin = @Admin, Inativo = @Inativo " +
                     "Where Codigo = @Codigo";
-                var parametros = new Dictionary<string, object>
+            var parametros = new Dictionary<string, object>
             {
                 { "@Nome", operador.Nome },
                 { "@Senha", operador.Senha },
@@ -65,22 +62,21 @@ namespace ProjetoC_.Service
                 { "@Inativo", operador.Inativo},
                 { "@Codigo", operador.Codigo}
             };
-                var resultado = await _dbService.ExecutarComandoAsync<RespostaComando>(query, parametros);
+            var resultado = await _dbService.ExecutarComandoAsync<RespostaComando>(query, parametros);
 
-                return resultado != null && resultado.linhasAfetadas > 0;
-            }
+            return resultado != null && resultado.LinhasAfetadas > 0;
         }
 
         public async Task<bool> ExcluirOperador(int codigo)
         {
-                String query = "Delete from Operador Where Codigo = @Codigo";
-                var parametros = new Dictionary<string, object>
+            String query = "Delete from Operador Where Codigo = @Codigo";
+            var parametros = new Dictionary<string, object>
             {
                 { "@Codigo", codigo }
             };
-                var resultado = await _dbService.ExecutarComandoAsync<RespostaComando>(query, parametros);
+            var resultado = await _dbService.ExecutarComandoAsync<RespostaComando>(query, parametros);
 
-                return resultado != null && resultado.linhasAfetadas > 0;
+            return resultado != null && resultado.LinhasAfetadas > 0;
         }
     }
 }

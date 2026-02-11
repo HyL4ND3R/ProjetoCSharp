@@ -86,6 +86,7 @@
             IsMdiContainer = true;
             MainMenuStrip = menuStrip;
             Name = "frmPrincipal";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Principal";
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();

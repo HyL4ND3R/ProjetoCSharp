@@ -17,7 +17,7 @@ namespace ProjetoC_
         private List<Operador> _listaOperadores;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
-        private ModoTela _eModoTela;
+        private ModoTela _eModoAtual;
 
         public frmOperadores()
         {
@@ -72,7 +72,7 @@ namespace ProjetoC_
             chkAdmin.Enabled = false;
             chkInativo.Enabled = false;
 
-            _eModoTela = ModoTela.Consulta;
+            _eModoAtual = ModoTela.Consulta;
         }
 
         private void modoInclusao()
@@ -99,7 +99,7 @@ namespace ProjetoC_
             chkInativo.Enabled = true;
             chkInativo.Checked = false;
 
-            _eModoTela = ModoTela.Inclusao;
+            _eModoAtual = ModoTela.Inclusao;
         }
 
         private void modoAlteracao()
@@ -121,14 +121,14 @@ namespace ProjetoC_
             chkAdmin.Enabled = true;
             chkInativo.Enabled = true;
 
-            _eModoTela = ModoTela.Alteracao;
+            _eModoAtual = ModoTela.Alteracao;
         }
 
         private void toolNovo_Click(object sender, EventArgs e)
         {
             modoInclusao();
         }
-        private void toolGravar_Click(object sender, EventArgs e)
+        private async void toolGravar_Click(object sender, EventArgs e)
         {
             try
             {
@@ -150,19 +150,36 @@ namespace ProjetoC_
                     Admin = chkAdmin.Checked ? (byte)1 : (byte)0,
                     Inativo = chkInativo.Checked ? (byte)1 : (byte)0
                 };
+                int idGerado = 0;
 
                 if (int.TryParse(txtCodigo.Text, out int codigo))
-                {
                     novoOperador.Codigo = codigo;
-                }
                 else
-                {
                     novoOperador.Codigo = 0; // Código 0 para novos registros, o banco deve gerar o código real
-                }
-                
-                try { 
-                    using var _ = operadorService.GravarOperador(novoOperador);
-                    _listaOperadores.Add(novoOperador);
+
+                try
+                {
+                    if (_eModoAtual == ModoTela.Inclusao)
+                    {
+                        // 1. Use o await para esperar a gravação. 
+                        idGerado = await operadorService.InserirOperador(novoOperador);
+
+                        if (idGerado <= 0)
+                        {
+                            MessageBox.Show("O banco de dados não confirmou a gravação.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        bool sucesso = await operadorService.AlterarOperador(novoOperador);
+                        
+                        if (!sucesso)
+                        {
+                            MessageBox.Show("O banco de dados não confirmou a gravação.");
+                            return;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -170,10 +187,14 @@ namespace ProjetoC_
                     return;
                 }
 
-                if (_eModoTela == ModoTela.Alteracao)
+                if (_eModoAtual == ModoTela.Alteracao)
                     _listaOperadores[_indiceAtual] = novoOperador; // Atualiza o registro existente
                 else
+                {
+                    novoOperador.Codigo = idGerado;
+                    _listaOperadores.Add(novoOperador); // Adiciona o novo registro
                     _indiceAtual = _listaOperadores.Count - 1; // Posiciona no novo registro
+                }
 
                 modoConsulta();
                 preencherCampos();
@@ -188,7 +209,7 @@ namespace ProjetoC_
         {
             modoAlteracao();
         }
-        private void toolExcluir_Click(object sender, EventArgs e)
+        private async void toolExcluir_Click(object sender, EventArgs e)
         {
 
         }
