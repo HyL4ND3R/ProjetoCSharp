@@ -42,7 +42,7 @@
             btnEntrar.Location = new Point(104, 200);
             btnEntrar.Name = "btnEntrar";
             btnEntrar.Size = new Size(125, 33);
-            btnEntrar.TabIndex = 0;
+            btnEntrar.TabIndex = 3;
             btnEntrar.Text = "Entrar";
             btnEntrar.Click += btnEntrar_Click;
             // 
@@ -62,7 +62,7 @@
             txtLogin.Location = new Point(102, 95);
             txtLogin.Name = "txtLogin";
             txtLogin.Size = new Size(164, 26);
-            txtLogin.TabIndex = 2;
+            txtLogin.TabIndex = 1;
             txtLogin.KeyPress += txtLogin_KeyPress;
             // 
             // txtSenha
@@ -71,7 +71,7 @@
             txtSenha.Location = new Point(102, 144);
             txtSenha.Name = "txtSenha";
             txtSenha.Size = new Size(164, 26);
-            txtSenha.TabIndex = 3;
+            txtSenha.TabIndex = 2;
             txtSenha.KeyPress += txtSenha_KeyPress;
             // 
             // lblLogin
@@ -94,7 +94,7 @@
             lblSenha.Text = "Senha:";
             lblSenha.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // Login
+            // frmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -105,7 +105,7 @@
             Controls.Add(txtLogin);
             Controls.Add(lblTitulo);
             Controls.Add(btnEntrar);
-            Name = "Login";
+            Name = "frmLogin";
             Text = "Login";
             ResumeLayout(false);
             PerformLayout();

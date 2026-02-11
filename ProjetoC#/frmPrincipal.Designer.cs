@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
+            menuStrip = new MenuStrip();
             menuOperadores = new ToolStripMenuItem();
             menuClientes = new ToolStripMenuItem();
             menuProdutos = new ToolStripMenuItem();
             menuPedidos = new ToolStripMenuItem();
             menuRelatorioPedidos = new ToolStripMenuItem();
-            menuStrip1.SuspendLayout();
+            menuStrip.SuspendLayout();
             SuspendLayout();
             // 
-            // menuStrip1
+            // menuStrip
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { menuOperadores, menuClientes, menuProdutos, menuPedidos, menuRelatorioPedidos });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1325, 24);
-            menuStrip1.TabIndex = 1;
-            menuStrip1.Text = "menuStrip1";
+            menuStrip.Items.AddRange(new ToolStripItem[] { menuOperadores, menuClientes, menuProdutos, menuPedidos, menuRelatorioPedidos });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Size = new Size(1325, 24);
+            menuStrip.TabIndex = 1;
+            menuStrip.Text = "menuStrip1";
             // 
             // menuOperadores
             // 
@@ -82,20 +82,20 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1325, 637);
-            Controls.Add(menuStrip1);
+            Controls.Add(menuStrip);
             IsMdiContainer = true;
-            MainMenuStrip = menuStrip1;
+            MainMenuStrip = menuStrip;
             Name = "frmPrincipal";
             Text = "Principal";
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStrip;
         private ToolStripMenuItem menuOperadores;
         private ToolStripMenuItem menuClientes;
         private ToolStripMenuItem menuProdutos;
