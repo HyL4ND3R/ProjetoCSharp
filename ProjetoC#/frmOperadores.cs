@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Linq.Expressions;
 using System.Text;
 using System.Windows.Forms;
 
@@ -376,9 +377,36 @@ namespace ProjetoC_
             }
         }
 
-        private void btnListaOperador_Click(object sender, EventArgs e)
+        private async void btnListaOperador_Click(object sender, EventArgs e)
         {
+            var listaOp = new List<Operador>();
+            try
+            {
+                var service = new OperadorService();
+                listaOp = await service.CarregarOperadores();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar operadores para pesquisa: " + ex.Message);
+                return;
+            }
+            // Convertemos a lista de Operadores para uma lista de Objetos
+            var listaParaPesquisa = listaOp.Cast<object>().ToList();
 
+            using (var frm = new frmListaPesquisa(listaParaPesquisa))
+            {
+                frm.Text = "Pesquisa de Operadores";
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    // Aqui você converte de volta (Cast)
+                    var opSelecionado = (Operador)frm.ObjetoSelecionado;
+
+                    // Sincroniza o índice
+                    _listaOperadores = listaOp; // Atualiza a lista local com os dados mais recentes
+                    _indiceAtual = _listaOperadores.FindIndex(x => x.Codigo == opSelecionado.Codigo);
+                    preencherCampos();
+                }
+            }
         }
     }
 }

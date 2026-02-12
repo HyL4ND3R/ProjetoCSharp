@@ -26,7 +26,7 @@ namespace ProjetoC_
                 // Se não estiver aberto, cria uma nova instância
                 fh = new T();
                 fh.MdiParent = this; // Define este FormPrincipal como o 'Pai'
-                fh.FormBorderStyle = FormBorderStyle.None; // Remove as bordas
+                //fh.FormBorderStyle = FormBorderStyle.None; // Remove as bordas
                 fh.Dock = DockStyle.Fill; // Faz ele preencher todo o fundo cinza
                 fh.Show();
             }
