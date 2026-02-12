@@ -196,6 +196,7 @@
             txtCodigo.Name = "txtCodigo";
             txtCodigo.Size = new Size(72, 26);
             txtCodigo.TabIndex = 8;
+            txtCodigo.KeyPress += txtCodigo_KeyPress;
             // 
             // lblNome
             // 
@@ -214,6 +215,7 @@
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(168, 26);
             txtNome.TabIndex = 12;
+            txtNome.KeyPress += txtNome_KeyPress;
             // 
             // txtSenha
             // 
@@ -222,6 +224,7 @@
             txtSenha.Name = "txtSenha";
             txtSenha.Size = new Size(168, 26);
             txtSenha.TabIndex = 13;
+            txtSenha.KeyPress += txtSenha_KeyPress;
             // 
             // chkAdmin
             // 
@@ -253,6 +256,7 @@
             btnListaOperador.Size = new Size(30, 28);
             btnListaOperador.TabIndex = 16;
             btnListaOperador.UseVisualStyleBackColor = true;
+            btnListaOperador.Click += btnListaOperador_Click;
             // 
             // lblContagem
             // 

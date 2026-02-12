@@ -4,6 +4,7 @@ using ProjetoC_.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -145,8 +146,8 @@ namespace ProjetoC_
                 OperadorService operadorService = new OperadorService();
                 Operador novoOperador = new Operador
                 {
-                    Nome = txtNome.Text,
-                    Senha = txtSenha.Text,
+                    Nome = txtNome.Text.Trim(),
+                    Senha = txtSenha.Text.Trim(),
                     Admin = chkAdmin.Checked ? (byte)1 : (byte)0,
                     Inativo = chkInativo.Checked ? (byte)1 : (byte)0
                 };
@@ -173,7 +174,7 @@ namespace ProjetoC_
                     else
                     {
                         bool sucesso = await operadorService.AlterarOperador(novoOperador);
-                        
+
                         if (!sucesso)
                         {
                             MessageBox.Show("O banco de dados não confirmou a gravação.");
@@ -211,7 +212,36 @@ namespace ProjetoC_
         }
         private async void toolExcluir_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("Confirma a exclusão do registro?",
+                "Confirmação",
+                MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
 
+            if (!int.TryParse(txtCodigo.Text, out int codigo))
+            {
+                MessageBox.Show("Código inválido para exclusão.");
+                return;
+            }
+
+            try
+            {
+                OperadorService operadorService = new OperadorService();
+                bool sucesso = await operadorService.ExcluirOperador(codigo);
+
+                if (!sucesso)
+                {
+                    MessageBox.Show("O banco de dados não confirmou a exclusão.");
+                    return;
+                }
+
+                _listaOperadores.RemoveAt(_indiceAtual); // Remove da lista local
+                toolProximo_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao excluir operador do banco: " + ex.Message);
+                return;
+            }
         }
         private void toolDesfazer_Click(object sender, EventArgs e)
         {
@@ -285,6 +315,52 @@ namespace ProjetoC_
             {
                 e.Handled = true; // Ignora o caractere
             }
+
+            if (_eModoAtual == ModoTela.Consulta && e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                if (!int.TryParse(txtCodigo.Text, out int codigo))
+                {
+                    MessageBox.Show("Código inválido.");
+                    txtCodigo.Focus();
+                    return;
+                }
+
+                int indiceEncontrado = _listaOperadores.FindIndex(op => op.Codigo == codigo);
+                if (indiceEncontrado >= 0)
+                {
+                    _indiceAtual = indiceEncontrado;
+                    preencherCampos();
+                }
+                else
+                {
+                    MessageBox.Show("Código não encontrado.");
+                    txtCodigo.Focus();
+                }
+            }
+        }
+
+        private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                txtSenha.Focus(); // Move o foco para o próximo campo
+            }
+        }
+
+        private void txtSenha_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                if (MessageBox.Show("Confirma Gravação?",
+                    "Confirmação",
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    toolGravar_Click(sender, e); // Chama o método de gravação
+                }
+            }
         }
 
         private void validaCampos()
@@ -294,10 +370,15 @@ namespace ProjetoC_
                 throw new Exception("O campo Nome é obrigatório.");
             }
 
-            if (String.IsNullOrWhiteSpace(txtSenha.Text))
+            if (String.IsNullOrWhiteSpace(txtSenha.Text.Trim()))
             {
                 throw new Exception("O campo Senha é obrigatório.");
             }
+        }
+
+        private void btnListaOperador_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
