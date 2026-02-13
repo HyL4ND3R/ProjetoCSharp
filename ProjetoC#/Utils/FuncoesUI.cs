@@ -31,5 +31,41 @@ namespace ProjetoC_.Utils
                 }
             }
         }
+        public static void AplicarMascaraMoeda(TextBox txt)
+        {
+            // Alinha o texto à direita como em sistemas contábeis
+            txt.TextAlign = HorizontalAlignment.Right;
+
+            // Evento para bloquear letras
+            txt.KeyPress += (sender, e) =>
+            {
+                if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)8) // Permite apenas números e Backspace
+                    e.Handled = true;
+            };
+
+            // Evento para formatar o valor enquanto digita
+            txt.TextChanged += (sender, e) =>
+            {
+                // Remove qualquer formatação anterior para pegar apenas os números
+                string valorLimpo = txt.Text.Replace(",", "").Replace(".", "").TrimStart('0');
+
+                if (string.IsNullOrEmpty(valorLimpo))
+                {
+                    txt.Text = "0,00";
+                }
+                else
+                {
+                    // Transforma o número em decimal (ex: 125 vira 1,25)
+                    double valorDecimal = double.Parse(valorLimpo) / 100;
+                    txt.Text = string.Format("{0:N2}", valorDecimal);
+                }
+
+                // Mantém o cursor sempre no final do texto
+                txt.SelectionStart = txt.Text.Length;
+            };
+
+            // Inicializa com o valor padrão
+            txt.Text = "0,00";
+        }
     }
 }

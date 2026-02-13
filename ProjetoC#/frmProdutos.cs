@@ -1,4 +1,5 @@
-﻿using ProjetoC_.Classes;
+﻿using Microsoft.Data.SqlClient;
+using ProjetoC_.Classes;
 using ProjetoC_.Enums;
 using ProjetoC_.Models;
 using ProjetoC_.Service;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -24,6 +26,7 @@ namespace ProjetoC_
         {
             InitializeComponent();
             FuncoesUI.AdicionarSelecaoAoFoco(this);
+            FuncoesUI.AplicarMascaraMoeda(txtValor);
         }
 
         private async void frmProdutos_Load(object sender, EventArgs e)
@@ -40,7 +43,7 @@ namespace ProjetoC_
 
                 if (_listaProdutos.Count > 0)
                 {
-                    _indiceAtual = 0;
+                    _indiceAtual = _listaProdutos.Count - 1;
                     preencherCampos();
                 }
                 else
@@ -183,7 +186,7 @@ namespace ProjetoC_
                 Produto novoProduto = new Produto
                 {
                     Nome = txtNome.Text.Trim(),
-                    Valor = decimal.Parse(txtValor.Text.Trim()),
+                    Valor = decimal.Parse(txtValor.Text),
                     Inativo = chkInativo.Checked ? (byte)1 : (byte)0
                 };
                 
@@ -308,7 +311,7 @@ namespace ProjetoC_
                 _indiceAtual++;
                 preencherCampos();
             }
-            else if (_indiceAtual == _listaProdutos.Count - 1)
+            else if (_indiceAtual > _listaProdutos.Count - 1)
             {
                 _indiceAtual = _listaProdutos.Count - 1; // no caso de já estar no último, mantém o índice
                 preencherCampos();

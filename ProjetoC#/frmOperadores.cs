@@ -1,4 +1,5 @@
-﻿using ProjetoC_.Classes;
+﻿using Microsoft.Data.SqlClient;
+using ProjetoC_.Classes;
 using ProjetoC_.Enums;
 using ProjetoC_.Service;
 using ProjetoC_.Utils;
@@ -42,7 +43,7 @@ namespace ProjetoC_
 
                 if (_listaOperadores.Count > 0)
                 {
-                    _indiceAtual = 0;
+                    _indiceAtual = _listaOperadores.Count - 1;
                     preencherCampos();
                 }
                 else
@@ -311,6 +312,11 @@ namespace ProjetoC_
             if (_indiceAtual < _listaOperadores.Count - 1)
             {
                 _indiceAtual++;
+                preencherCampos();
+            }
+            else if (_indiceAtual > _listaOperadores.Count - 1)
+            {
+                _indiceAtual = _listaOperadores.Count - 1; // no caso de já estar no último, mantém o índice
                 preencherCampos();
             }
         }
