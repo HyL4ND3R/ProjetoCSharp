@@ -64,6 +64,7 @@
             menuProdutos.Name = "menuProdutos";
             menuProdutos.Size = new Size(67, 20);
             menuProdutos.Text = "Produtos";
+            menuProdutos.Click += menuProdutos_Click;
             // 
             // menuPedidos
             // 

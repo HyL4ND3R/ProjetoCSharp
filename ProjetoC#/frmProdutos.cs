@@ -1,46 +1,44 @@
 ﻿using ProjetoC_.Classes;
 using ProjetoC_.Enums;
+using ProjetoC_.Models;
 using ProjetoC_.Service;
 using ProjetoC_.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Drawing;
-using System.Linq.Expressions;
 using System.Text;
 using System.Windows.Forms;
 
 namespace ProjetoC_
 {
-    public partial class frmOperadores : Form
+    public partial class frmProdutos : Form
     {
-
-        private List<Operador> _listaOperadores;
+        private List<Produto> _listaProdutos;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
         private ModoTela _eModoAtual;
 
-        public frmOperadores()
+        public frmProdutos()
         {
             InitializeComponent();
             FuncoesUI.AdicionarSelecaoAoFoco(this);
         }
 
-        private async void frmOperadores_Load(object sender, EventArgs e)
+        private async void frmProdutos_Load(object sender, EventArgs e)
         {
-            _listaOperadores = new List<Operador>();
+            _listaProdutos = new List<Produto>();
             modoConsulta();
 
             try
             {
-                OperadorService operador = new OperadorService();
+                ProdutoService produto = new ProdutoService();
 
                 // Carrega os operadores usando o serviço
-                _listaOperadores = await operador.CarregarOperadores();
+                _listaProdutos = await produto.CarregarProdutos();
 
-                if (_listaOperadores.Count > 0)
+                if (_listaProdutos.Count > 0)
                 {
                     _indiceAtual = 0;
                     preencherCampos();
@@ -53,11 +51,11 @@ namespace ProjetoC_
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar operadores: " + ex.Message);
+                MessageBox.Show("Erro ao carregar produtos: " + ex.Message);
             }
         }
 
-        private void fromOperadores_KeyDown(object sender, KeyEventArgs e)
+        private void frmProdutos_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2 && _eModoAtual == ModoTela.Consulta)
             {
@@ -69,14 +67,14 @@ namespace ProjetoC_
                 e.Handled = true; // Evita o som de alerta
                 modoAlteracao();
             }
-            if (e.KeyCode == Keys.F3 && 
+            if (e.KeyCode == Keys.F3 &&
                 (_eModoAtual == ModoTela.Alteracao ||
                 _eModoAtual == ModoTela.Inclusao))
             {
                 e.Handled = true; // Evita o som de alerta
                 toolGravar_Click(sender, e); // Chama o método de gravação
             }
-            if (e.KeyCode == Keys.Escape && 
+            if (e.KeyCode == Keys.Escape &&
                 (_eModoAtual == ModoTela.Alteracao ||
                 _eModoAtual == ModoTela.Inclusao))
             {
@@ -103,10 +101,9 @@ namespace ProjetoC_
             toolUltimo.Enabled = true;
 
             txtCodigo.Enabled = true;
-            btnListaOperador.Enabled = true;
+            btnListaProduto.Enabled = true;
             txtNome.Enabled = false;
-            txtSenha.Enabled = false;
-            chkAdmin.Enabled = false;
+            txtValor.Enabled = false;
             chkInativo.Enabled = false;
 
             txtCodigo.Focus();
@@ -128,13 +125,11 @@ namespace ProjetoC_
 
             txtCodigo.Enabled = false;
             txtCodigo.Text = "";
-            btnListaOperador.Enabled = false;
+            btnListaProduto.Enabled = false;
             txtNome.Enabled = true;
             txtNome.Text = "";
-            txtSenha.Enabled = true;
-            txtSenha.Text = "";
-            chkAdmin.Enabled = true;
-            chkAdmin.Checked = false;
+            txtValor.Enabled = true;
+            txtValor.Text = "";
             chkInativo.Enabled = true;
             chkInativo.Checked = false;
 
@@ -156,10 +151,9 @@ namespace ProjetoC_
             toolUltimo.Enabled = false;
 
             txtCodigo.Enabled = false;
-            btnListaOperador.Enabled = false;
+            btnListaProduto.Enabled = false;
             txtNome.Enabled = true;
-            txtSenha.Enabled = true;
-            chkAdmin.Enabled = true;
+            txtValor.Enabled = true;
             chkInativo.Enabled = true;
 
             txtNome.Focus();
@@ -185,27 +179,28 @@ namespace ProjetoC_
 
             try
             {
-                OperadorService operadorService = new OperadorService();
-                Operador novoOperador = new Operador
+                ProdutoService produtoService = new ProdutoService();
+                Produto novoProduto = new Produto
                 {
                     Nome = txtNome.Text.Trim(),
-                    Senha = txtSenha.Text.Trim(),
-                    Admin = chkAdmin.Checked ? (byte)1 : (byte)0,
+                    Valor = decimal.Parse(txtValor.Text.Trim()),
                     Inativo = chkInativo.Checked ? (byte)1 : (byte)0
                 };
-                int idGerado = 0;
+                
 
                 if (int.TryParse(txtCodigo.Text, out int codigo))
-                    novoOperador.Codigo = codigo;
+                    novoProduto.Codigo = codigo;
                 else
-                    novoOperador.Codigo = 0; // Código 0 para novos registros, o banco deve gerar o código real
+                    novoProduto.Codigo = 0; // Código 0 para novos registros, o banco deve gerar o código real
+                
+                int idGerado = 0;
 
                 try
                 {
                     if (_eModoAtual == ModoTela.Inclusao)
                     {
                         // 1. Use o await para esperar a gravação. 
-                        idGerado = await operadorService.InserirOperador(novoOperador);
+                        idGerado = await produtoService.InserirProduto(novoProduto);
 
                         if (idGerado <= 0)
                         {
@@ -215,7 +210,7 @@ namespace ProjetoC_
                     }
                     else
                     {
-                        bool sucesso = await operadorService.AlterarOperador(novoOperador);
+                        bool sucesso = await produtoService.AlterarProduto(novoProduto);
 
                         if (!sucesso)
                         {
@@ -226,17 +221,17 @@ namespace ProjetoC_
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Erro ao gravar operador no banco: " + ex.Message);
+                    MessageBox.Show("Erro ao gravar produto no banco: " + ex.Message);
                     return;
                 }
 
                 if (_eModoAtual == ModoTela.Alteracao)
-                    _listaOperadores[_indiceAtual] = novoOperador; // Atualiza o registro existente
+                    _listaProdutos[_indiceAtual] = novoProduto; // Atualiza o registro existente
                 else
                 {
-                    novoOperador.Codigo = idGerado;
-                    _listaOperadores.Add(novoOperador); // Adiciona o novo registro
-                    _indiceAtual = _listaOperadores.Count - 1; // Posiciona no novo registro
+                    novoProduto.Codigo = idGerado;
+                    _listaProdutos.Add(novoProduto); // Adiciona o novo registro
+                    _indiceAtual = _listaProdutos.Count - 1; // Posiciona no novo registro
                 }
 
                 modoConsulta();
@@ -244,7 +239,7 @@ namespace ProjetoC_
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao gravar operador: " + ex.Message);
+                MessageBox.Show("Erro ao gravar produto: " + ex.Message);
             }
 
         }
@@ -267,8 +262,8 @@ namespace ProjetoC_
 
             try
             {
-                OperadorService operadorService = new OperadorService();
-                bool sucesso = await operadorService.ExcluirOperador(codigo);
+                ProdutoService produtoService = new ProdutoService();
+                bool sucesso = await produtoService.ExcluirProduto(codigo);
 
                 if (!sucesso)
                 {
@@ -276,12 +271,12 @@ namespace ProjetoC_
                     return;
                 }
 
-                _listaOperadores.RemoveAt(_indiceAtual); // Remove da lista local
+                _listaProdutos.RemoveAt(_indiceAtual); // Remove da lista local
                 toolProximo_Click(sender, e);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao excluir operador do banco: " + ex.Message);
+                MessageBox.Show("Erro ao excluir produto do banco: " + ex.Message);
                 return;
             }
         }
@@ -292,7 +287,7 @@ namespace ProjetoC_
         }
         private void toolPrimeiro_Click(object sender, EventArgs e)
         {
-            if (_listaOperadores.Count > 0)
+            if (_listaProdutos.Count > 0)
             {
                 _indiceAtual = 0;
                 preencherCampos();
@@ -308,33 +303,37 @@ namespace ProjetoC_
         }
         private void toolProximo_Click(object sender, EventArgs e)
         {
-            if (_indiceAtual < _listaOperadores.Count - 1)
+            if (_indiceAtual < _listaProdutos.Count - 1)
             {
                 _indiceAtual++;
+                preencherCampos();
+            }
+            else if (_indiceAtual == _listaProdutos.Count - 1)
+            {
+                _indiceAtual = _listaProdutos.Count - 1; // no caso de já estar no último, mantém o índice
                 preencherCampos();
             }
         }
         private void toolUltimo_Click(object sender, EventArgs e)
         {
-            if (_listaOperadores.Count > 0)
+            if (_listaProdutos.Count > 0)
             {
-                _indiceAtual = _listaOperadores.Count - 1;
+                _indiceAtual = _listaProdutos.Count - 1;
                 preencherCampos();
             }
         }
 
         private void preencherCampos()
         {
-            if (_listaOperadores.Count > 0 && _indiceAtual >= 0 && _indiceAtual < _listaOperadores.Count)
+            if (_listaProdutos.Count > 0 && _indiceAtual >= 0 && _indiceAtual < _listaProdutos.Count)
             {
-                var op = _listaOperadores[_indiceAtual];
+                var op = _listaProdutos[_indiceAtual];
                 txtCodigo.Text = op.Codigo.ToString();
                 txtNome.Text = op.Nome;
-                txtSenha.Text = op.Senha;
-                chkAdmin.Checked = op.Admin == 1;
+                txtValor.Text = op.Valor.ToString("F2");
                 chkInativo.Checked = op.Inativo == 1;
 
-                lblContagem.Text = $"{_indiceAtual + 1} de {_listaOperadores.Count}";
+                lblContagem.Text = $"{_indiceAtual + 1} de {_listaProdutos.Count}";
             }
             else
             {
@@ -345,8 +344,7 @@ namespace ProjetoC_
         {
             txtCodigo.Text = "";
             txtNome.Text = "";
-            txtSenha.Text = "";
-            chkAdmin.Checked = false;
+            txtValor.Text = "";
             chkInativo.Checked = false;
             lblContagem.Text = "0 de 0";
         }
@@ -368,7 +366,7 @@ namespace ProjetoC_
                     return;
                 }
 
-                int indiceEncontrado = _listaOperadores.FindIndex(op => op.Codigo == codigo);
+                int indiceEncontrado = _listaProdutos.FindIndex(op => op.Codigo == codigo);
                 if (indiceEncontrado >= 0)
                 {
                     _indiceAtual = indiceEncontrado;
@@ -387,7 +385,7 @@ namespace ProjetoC_
             if (e.KeyCode == Keys.F4)
             {
                 e.Handled = true; // Evita o som de alerta
-                btnListaOperador_Click(sender, e); // Chama o método de pesquisa
+                btnListaProduto_Click(sender, e); // Chama o método de pesquisa
             }
         }
 
@@ -396,11 +394,11 @@ namespace ProjetoC_
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita o som de alerta
-                txtSenha.Focus(); // Move o foco para o próximo campo
+                txtValor.Focus(); // Move o foco para o próximo campo
             }
         }
 
-        private void txtSenha_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtValor_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
@@ -421,19 +419,24 @@ namespace ProjetoC_
                 throw new Exception("O campo Nome é obrigatório.");
             }
 
-            if (String.IsNullOrWhiteSpace(txtSenha.Text.Trim()))
+            if (string.IsNullOrWhiteSpace(txtValor.Text))
             {
-                throw new Exception("O campo Senha é obrigatório.");
+                throw new Exception("O campo Valor é obrigatório.");
+            }
+
+            if (!decimal.TryParse(txtValor.Text, out decimal valor))
+            {
+                throw new Exception("O campo Valor deve ser um número válido.");
             }
         }
 
-        private async void btnListaOperador_Click(object sender, EventArgs e)
+        private async void btnListaProduto_Click(object sender, EventArgs e)
         {
-            var listaOp = new List<Operador>();
+            var listaPr = new List<Produto>();
             try
             {
-                var service = new OperadorService();
-                listaOp = await service.CarregarOperadores();
+                var service = new ProdutoService();
+                listaPr = await service.CarregarProdutos();
             }
             catch (Exception ex)
             {
@@ -441,19 +444,19 @@ namespace ProjetoC_
                 return;
             }
             // Convertemos a lista de Operadores para uma lista de Objetos
-            var listaParaPesquisa = listaOp.Cast<object>().ToList();
+            var listaParaPesquisa = listaPr.Cast<object>().ToList();
 
             using (var frm = new frmListaPesquisa(listaParaPesquisa))
             {
-                frm.Text = "Pesquisa de Operadores";
+                frm.Text = "Pesquisa de Produtos";
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    // Aqui você converte de volta (Cast)
-                    var opSelecionado = (Operador)frm.ObjetoSelecionado;
+                    // converte de volta object para Produto(Cast)
+                    var prSelecionado = (Produto)frm.ObjetoSelecionado;
 
                     // Sincroniza o índice
-                    _listaOperadores = listaOp; // Atualiza a lista local com os dados mais recentes
-                    _indiceAtual = _listaOperadores.FindIndex(x => x.Codigo == opSelecionado.Codigo);
+                    _listaProdutos = listaPr; // Atualiza a lista local com os dados mais recentes
+                    _indiceAtual = _listaProdutos.FindIndex(x => x.Codigo == prSelecionado.Codigo);
                     preencherCampos();
                 }
             }

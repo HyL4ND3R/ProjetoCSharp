@@ -70,6 +70,7 @@
             txtSenha.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSenha.Location = new Point(102, 144);
             txtSenha.Name = "txtSenha";
+            txtSenha.PasswordChar = '*';
             txtSenha.Size = new Size(164, 26);
             txtSenha.TabIndex = 2;
             txtSenha.KeyPress += txtSenha_KeyPress;

@@ -1,6 +1,7 @@
 using Microsoft.VisualBasic;
 using ProjetoC_.Classes;
 using ProjetoC_.Service;
+using ProjetoC_.Utils;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json; // Para PostAsJsonAsync
@@ -21,6 +22,7 @@ namespace ProjetoC_
         {
             InitializeComponent();
             _dbService = new DatabaseService();
+            FuncoesUI.AdicionarSelecaoAoFoco(this);
         }
 
         private async void btnEntrar_Click(object sender, EventArgs e)

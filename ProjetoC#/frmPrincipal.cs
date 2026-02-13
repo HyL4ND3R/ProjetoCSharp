@@ -41,5 +41,10 @@ namespace ProjetoC_
         {
             AbrirFormFilho<frmOperadores>();
         }
+
+        private void menuProdutos_Click(object sender, EventArgs e)
+        {
+            AbrirFormFilho<frmProdutos>();
+        }
     }
 }

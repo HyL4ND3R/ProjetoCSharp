@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjetoC_.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +17,7 @@ namespace ProjetoC_
         public frmListaPesquisa(List<object> lista)
         {
             InitializeComponent();
+            FuncoesUI.AdicionarSelecaoAoFoco(this);
             _listaPesquisa = lista;
             dgvListaPesquisa.DataSource = _listaPesquisa;
             ConfigurarGrade();

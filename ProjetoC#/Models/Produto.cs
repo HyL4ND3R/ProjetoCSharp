@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Security.Cryptography;
+using System.Collections.Generic;
 using System.Text;
 
-namespace ProjetoC_.Classes
+namespace ProjetoC_.Models
 {
-    public class Operador
+    internal class Produto
     {
         public int Codigo { get; set; }
         public string Nome { get; set; }
-        public string Senha { get; set; }
-        public byte Admin { get; set; }
+        public decimal Valor { get; set; }
         public byte Inativo { get; set; }
 
         public override string ToString()
         {
-            return $"Codigo = {Codigo} Nome = {Nome}";
+            return $"Codigo = {Codigo} Nome = {Nome} Valor = {Valor}";
         }
     }
 }
