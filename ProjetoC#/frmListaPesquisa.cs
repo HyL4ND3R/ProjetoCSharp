@@ -91,5 +91,19 @@ namespace ProjetoC_
             var listaFiltrada = _listaPesquisa.FindAll(item => item.ToString().ToLower().Contains(filtro));
             dgvListaPesquisa.DataSource = listaFiltrada;
         }
+
+        private void frmListaPesquisa_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                btnSelecionar_Click(sender, e);
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                btnCancelar_Click(sender, e);
+            }
+        }
     }
 }

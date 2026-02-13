@@ -196,6 +196,7 @@
             txtCodigo.Name = "txtCodigo";
             txtCodigo.Size = new Size(72, 26);
             txtCodigo.TabIndex = 8;
+            txtCodigo.KeyDown += txtCodigo_KeyDown;
             txtCodigo.KeyPress += txtCodigo_KeyPress;
             // 
             // lblNome
@@ -283,11 +284,13 @@
             Controls.Add(lblCodigo);
             Controls.Add(toolStrip);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            KeyPreview = true;
             MaximizeBox = false;
             Name = "frmOperadores";
             StartPosition = FormStartPosition.CenterParent;
             Text = "frmOperadores";
             Load += frmOperadores_Load;
+            KeyDown += fromOperadores_KeyDown;
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();
             ResumeLayout(false);

@@ -55,6 +55,28 @@ namespace ProjetoC_
             }
         }
 
+        private void fromOperadores_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F2 && _eModoAtual == ModoTela.Consulta)
+            {
+                e.Handled = true; // Evita o som de alerta
+                modoInclusao();
+            }
+            if (e.KeyCode == Keys.F5 && _eModoAtual == ModoTela.Consulta)
+            {
+                e.Handled = true; // Evita o som de alerta
+                modoAlteracao();
+            }
+            if (e.KeyCode == Keys.F3 && 
+                (_eModoAtual == ModoTela.Alteracao ||
+                _eModoAtual == ModoTela.Inclusao))
+            {
+                e.Handled = true; // Evita o som de alerta
+                toolGravar_Click(sender, e); // Chama o método de gravação
+            }
+
+        }
+
         private void modoConsulta()
         {
             toolNovo.Enabled = true;
@@ -73,6 +95,8 @@ namespace ProjetoC_
             txtSenha.Enabled = false;
             chkAdmin.Enabled = false;
             chkInativo.Enabled = false;
+
+            txtCodigo.Focus();
 
             _eModoAtual = ModoTela.Consulta;
         }
@@ -101,6 +125,8 @@ namespace ProjetoC_
             chkInativo.Enabled = true;
             chkInativo.Checked = false;
 
+            txtNome.Focus();
+
             _eModoAtual = ModoTela.Inclusao;
         }
 
@@ -122,6 +148,8 @@ namespace ProjetoC_
             txtSenha.Enabled = true;
             chkAdmin.Enabled = true;
             chkInativo.Enabled = true;
+
+            txtNome.Focus();
 
             _eModoAtual = ModoTela.Alteracao;
         }
@@ -338,6 +366,15 @@ namespace ProjetoC_
                     MessageBox.Show("Código não encontrado.");
                     txtCodigo.Focus();
                 }
+            }
+        }
+
+        private void txtCodigo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F4)
+            {
+                e.Handled = true; // Evita o som de alerta
+                btnListaOperador_Click(sender, e); // Chama o método de pesquisa
             }
         }
 

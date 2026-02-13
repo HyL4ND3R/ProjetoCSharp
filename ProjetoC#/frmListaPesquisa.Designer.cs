@@ -88,9 +88,11 @@
             Controls.Add(btnSelecionar);
             Controls.Add(btnCancelar);
             Controls.Add(dgvListaPesquisa);
+            KeyPreview = true;
             Name = "frmListaPesquisa";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "frmListaPesquisa";
+            KeyDown += frmListaPesquisa_KeyDown;
             ((System.ComponentModel.ISupportInitialize)dgvListaPesquisa).EndInit();
             ResumeLayout(false);
             PerformLayout();
