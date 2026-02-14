@@ -1,6 +1,6 @@
 ﻿namespace ProjetoC_
 {
-    partial class frmPedido
+    partial class frmPedidos
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPedido));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPedidos));
             txtValorTotal = new TextBox();
             lblValorTotal = new Label();
             txtNomeCliente = new TextBox();
@@ -49,14 +49,14 @@
             toolStrip = new ToolStrip();
             txtCodCliente = new TextBox();
             btnListaCliente = new Button();
-            dateTimePicker1 = new DateTimePicker();
+            dtpDataPedido = new DateTimePicker();
             lblData = new Label();
             btnNovoItem = new Button();
             btnSalvarItem = new Button();
             btnAlterarItem = new Button();
             btnExcluirItem = new Button();
             btnCancelar = new Button();
-            dataGridView1 = new DataGridView();
+            dgvItens = new DataGridView();
             txtProdutoCod = new TextBox();
             btnListaProduto = new Button();
             txtProdutoNome = new TextBox();
@@ -68,11 +68,12 @@
             lblValorUn = new Label();
             lblTotalItem = new Label();
             toolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvItens).BeginInit();
             SuspendLayout();
             // 
             // txtValorTotal
             // 
+            txtValorTotal.Enabled = false;
             txtValorTotal.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtValorTotal.Location = new Point(296, 400);
             txtValorTotal.Name = "txtValorTotal";
@@ -267,18 +268,18 @@
             btnListaCliente.TabIndex = 34;
             btnListaCliente.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker1
+            // dtpDataPedido
             // 
-            dateTimePicker1.CalendarFont = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dateTimePicker1.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dateTimePicker1.Format = DateTimePickerFormat.Short;
-            dateTimePicker1.Location = new Point(344, 56);
-            dateTimePicker1.MaxDate = new DateTime(2100, 12, 31, 0, 0, 0, 0);
-            dateTimePicker1.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(120, 26);
-            dateTimePicker1.TabIndex = 35;
-            dateTimePicker1.Value = new DateTime(2026, 2, 13, 23, 25, 2, 0);
+            dtpDataPedido.CalendarFont = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dtpDataPedido.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dtpDataPedido.Format = DateTimePickerFormat.Short;
+            dtpDataPedido.Location = new Point(344, 56);
+            dtpDataPedido.MaxDate = new DateTime(2100, 12, 31, 0, 0, 0, 0);
+            dtpDataPedido.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dtpDataPedido.Name = "dtpDataPedido";
+            dtpDataPedido.Size = new Size(120, 26);
+            dtpDataPedido.TabIndex = 35;
+            dtpDataPedido.Value = new DateTime(2026, 2, 13, 23, 25, 2, 0);
             // 
             // lblData
             // 
@@ -345,14 +346,14 @@
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dgvItens
             // 
-            dataGridView1.AllowUserToOrderColumns = true;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(208, 216);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(480, 176);
-            dataGridView1.TabIndex = 42;
+            dgvItens.AllowUserToOrderColumns = true;
+            dgvItens.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvItens.Location = new Point(208, 216);
+            dgvItens.Name = "dgvItens";
+            dgvItens.Size = new Size(480, 176);
+            dgvItens.TabIndex = 42;
             // 
             // txtProdutoCod
             // 
@@ -443,7 +444,7 @@
             lblTotalItem.Text = "Total:";
             lblTotalItem.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // frmPedido
+            // frmPedidos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -458,14 +459,14 @@
             Controls.Add(txtProdutoNome);
             Controls.Add(btnListaProduto);
             Controls.Add(txtProdutoCod);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvItens);
             Controls.Add(btnCancelar);
             Controls.Add(btnExcluirItem);
             Controls.Add(btnAlterarItem);
             Controls.Add(btnSalvarItem);
             Controls.Add(btnNovoItem);
             Controls.Add(lblData);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(dtpDataPedido);
             Controls.Add(btnListaCliente);
             Controls.Add(txtCodCliente);
             Controls.Add(txtValorTotal);
@@ -477,11 +478,11 @@
             Controls.Add(txtCodigo);
             Controls.Add(lblCodigo);
             Controls.Add(toolStrip);
-            Name = "frmPedido";
+            Name = "frmPedidos";
             Text = "frmPedido";
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvItens).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -507,14 +508,14 @@
         private ToolStrip toolStrip;
         private TextBox txtCodCliente;
         private Button btnListaCliente;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker dtpDataPedido;
         private Label lblData;
         private Button btnNovoItem;
         private Button btnSalvarItem;
         private Button btnAlterarItem;
         private Button btnExcluirItem;
         private Button btnCancelar;
-        private DataGridView dataGridView1;
+        private DataGridView dgvItens;
         private TextBox txtProdutoCod;
         private Button btnListaProduto;
         private TextBox txtProdutoNome;

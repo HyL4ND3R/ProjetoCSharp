@@ -8,10 +8,10 @@ namespace ProjetoC_.Models
     public class Cliente
     {
         public int Codigo { get; set; }
-        public String Nome { get; set; }
+        public string? Nome { get; set; }
         public eTipoDocumentoCliente TipoDocumento { get; set; }
-        public String Documento { get; set; }
-        public String Telefone { get; set; }
+        public string? Documento { get; set; }
+        public string? Telefone { get; set; }
         public int Inativo { get; set; }
 
         public override string ToString()

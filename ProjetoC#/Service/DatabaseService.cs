@@ -95,5 +95,6 @@ namespace ProjetoC_.Service
                 throw new Exception($"Falha na comunicação: {ex.Message}");
             }
         }
+
     }
 }

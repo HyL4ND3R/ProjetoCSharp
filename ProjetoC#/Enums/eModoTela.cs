@@ -8,6 +8,7 @@ namespace ProjetoC_.Enums
     {
         Inclusao = 1,
         Alteracao = 2,
-        Consulta = 3
+        Consulta = 3,
+        Bloqueado = 4
     }
 }

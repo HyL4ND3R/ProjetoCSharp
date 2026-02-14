@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProjetoC_.Service
 {
-    internal class ProdutoService
+    public class ProdutoService
     {
 
         private readonly DatabaseService _dbService = new DatabaseService();

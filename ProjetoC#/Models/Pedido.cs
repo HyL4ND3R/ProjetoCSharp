@@ -4,19 +4,20 @@ using System.Text;
 
 namespace ProjetoC_.Models
 {
-    internal class Pedido
+    public class Pedido
     {
         public int Controle { get; set; }
         public int Codigo { get; set; }
-        public Cliente Cliente { get; set; }
+        public int ClienteCodigo { get; set; }
+        public string? ClienteNome { get; set; }
         public DateTime DataPedido { get; set; }
         public Decimal ValorTotal { get; set; }
 
         public override string ToString()
         {
             return $"Codigo = {Codigo} " +
-                $"CodigoCliente = {Cliente.Codigo} " +
-                $"NomeCliente = {Cliente.Nome} " +
+                $"CodigoCliente = {ClienteCodigo} " +
+                $"NomeCliente = {ClienteNome} " +
                 $"DataPedido = {DataPedido} " +
                 $"ValorTotal = {ValorTotal}";
         }
