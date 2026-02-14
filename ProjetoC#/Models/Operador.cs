@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ProjetoC_.Classes
+namespace ProjetoC_.Models
 {
     public class Operador
     {

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ProjetoC_.Enums
 {
-    public enum ModoTela
+    public enum eModoTela
     {
         Inclusao = 1,
         Alteracao = 2,

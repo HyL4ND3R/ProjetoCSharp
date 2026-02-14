@@ -58,6 +58,7 @@
             menuClientes.Name = "menuClientes";
             menuClientes.Size = new Size(61, 20);
             menuClientes.Text = "Clientes";
+            menuClientes.Click += menuClientes_Click;
             // 
             // menuProdutos
             // 

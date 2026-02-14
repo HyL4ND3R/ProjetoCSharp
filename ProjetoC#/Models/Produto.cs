@@ -13,7 +13,9 @@ namespace ProjetoC_.Models
 
         public override string ToString()
         {
-            return $"Codigo = {Codigo} Nome = {Nome} Valor = {Valor}";
+            return $"Codigo = {Codigo} " +
+                $"Nome = {Nome} " +
+                $"Valor = {Valor} ";
         }
     }
 }

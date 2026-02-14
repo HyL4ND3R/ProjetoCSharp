@@ -1,6 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using ProjetoC_.Models;
-using ProjetoC_.Enums;
+﻿using ProjetoC_.Enums;
 using ProjetoC_.Models;
 using ProjetoC_.Service;
 using ProjetoC_.Utils;
@@ -8,42 +6,41 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlTypes;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
 namespace ProjetoC_
 {
-    public partial class frmProdutos : Form
+    public partial class frmClientes : Form
     {
-        private List<Produto> _listaProdutos;
+        private List<Cliente> _listaClientes;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
         private eModoTela _eModoAtual;
 
-        public frmProdutos()
+        public frmClientes()
         {
             InitializeComponent();
+            ConfigurarComboDocumento();
             FuncoesUI.AdicionarSelecaoAoFoco(this);
-            FuncoesUI.AplicarMascaraMoeda(txtValor);
         }
 
-        private async void frmProdutos_Load(object sender, EventArgs e)
+        private async void frmClientes_Load(object sender, EventArgs e)
         {
-            _listaProdutos = new List<Produto>();
+            _listaClientes = new List<Cliente>();
             modoConsulta();
 
             try
             {
-                ProdutoService produto = new ProdutoService();
+                ClienteService cliente = new ClienteService();
 
                 // Carrega os operadores usando o serviço
-                _listaProdutos = await produto.CarregarProdutos();
+                _listaClientes = await cliente.CarregarClientes();
 
-                if (_listaProdutos.Count > 0)
+                if (_listaClientes.Count > 0)
                 {
-                    _indiceAtual = _listaProdutos.Count - 1;
+                    _indiceAtual = _listaClientes.Count - 1;
                     preencherCampos();
                 }
                 else
@@ -54,11 +51,11 @@ namespace ProjetoC_
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar produtos: " + ex.Message);
+                MessageBox.Show("Erro ao carregar clientes: " + ex.Message);
             }
         }
 
-        private void frmProdutos_KeyDown(object sender, KeyEventArgs e)
+        private void frmClientes_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2 && _eModoAtual == eModoTela.Consulta)
             {
@@ -104,9 +101,11 @@ namespace ProjetoC_
             toolUltimo.Enabled = true;
 
             txtCodigo.Enabled = true;
-            btnListaProduto.Enabled = true;
+            btnListaCliente.Enabled = true;
             txtNome.Enabled = false;
-            txtValor.Enabled = false;
+            cmbTipoDocumento.Enabled = false;
+            txtDocumento.Enabled = false;
+            txtTelefone.Enabled = false;
             chkInativo.Enabled = false;
 
             txtCodigo.Focus();
@@ -128,11 +127,15 @@ namespace ProjetoC_
 
             txtCodigo.Enabled = false;
             txtCodigo.Text = "";
-            btnListaProduto.Enabled = false;
+            btnListaCliente.Enabled = false;
             txtNome.Enabled = true;
             txtNome.Text = "";
-            txtValor.Enabled = true;
-            txtValor.Text = "";
+            cmbTipoDocumento.Enabled = true;
+            cmbTipoDocumento.SelectedIndex = -1;
+            txtDocumento.Enabled = true;
+            txtDocumento.Text = "";
+            txtTelefone.Enabled = true;
+            txtTelefone.Text = "";
             chkInativo.Enabled = true;
             chkInativo.Checked = false;
 
@@ -154,9 +157,11 @@ namespace ProjetoC_
             toolUltimo.Enabled = false;
 
             txtCodigo.Enabled = false;
-            btnListaProduto.Enabled = false;
+            btnListaCliente.Enabled = false;
             txtNome.Enabled = true;
-            txtValor.Enabled = true;
+            cmbTipoDocumento.Enabled = true;
+            txtDocumento.Enabled = true;
+            txtTelefone.Enabled = true;
             chkInativo.Enabled = true;
 
             txtNome.Focus();
@@ -182,20 +187,22 @@ namespace ProjetoC_
 
             try
             {
-                ProdutoService produtoService = new ProdutoService();
-                Produto novoProduto = new Produto
+                ClienteService clienteService = new ClienteService();
+                Cliente novoCliente = new Cliente
                 {
                     Nome = txtNome.Text.Trim(),
-                    Valor = decimal.Parse(txtValor.Text),
+                    TipoDocumento = (eTipoDocumentoCliente)cmbTipoDocumento.SelectedItem,
+                    Documento = txtDocumento.Text.Trim(),
+                    Telefone = txtTelefone.Text.Trim(),
                     Inativo = chkInativo.Checked ? (byte)1 : (byte)0
                 };
-                
+
 
                 if (int.TryParse(txtCodigo.Text, out int codigo))
-                    novoProduto.Codigo = codigo;
+                    novoCliente.Codigo = codigo;
                 else
-                    novoProduto.Codigo = 0; // Código 0 para novos registros, o banco deve gerar o código real
-                
+                    novoCliente.Codigo = 0; // Código 0 para novos registros, o banco deve gerar o código real
+
                 int idGerado = 0;
 
                 try
@@ -203,7 +210,7 @@ namespace ProjetoC_
                     if (_eModoAtual == eModoTela.Inclusao)
                     {
                         // 1. Use o await para esperar a gravação. 
-                        idGerado = await produtoService.InserirProduto(novoProduto);
+                        idGerado = await clienteService.InserirCliente(novoCliente);
 
                         if (idGerado <= 0)
                         {
@@ -213,7 +220,7 @@ namespace ProjetoC_
                     }
                     else
                     {
-                        bool sucesso = await produtoService.AlterarProduto(novoProduto);
+                        bool sucesso = await clienteService.AlterarCliente(novoCliente);
 
                         if (!sucesso)
                         {
@@ -224,17 +231,17 @@ namespace ProjetoC_
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Erro ao gravar produto no banco: " + ex.Message);
+                    MessageBox.Show("Erro ao gravar cliente no banco: " + ex.Message);
                     return;
                 }
 
                 if (_eModoAtual == eModoTela.Alteracao)
-                    _listaProdutos[_indiceAtual] = novoProduto; // Atualiza o registro existente
+                    _listaClientes[_indiceAtual] = novoCliente; // Atualiza o registro existente
                 else
                 {
-                    novoProduto.Codigo = idGerado;
-                    _listaProdutos.Add(novoProduto); // Adiciona o novo registro
-                    _indiceAtual = _listaProdutos.Count - 1; // Posiciona no novo registro
+                    novoCliente.Codigo = idGerado;
+                    _listaClientes.Add(novoCliente); // Adiciona o novo registro
+                    _indiceAtual = _listaClientes.Count - 1; // Posiciona no novo registro
                 }
 
                 modoConsulta();
@@ -242,7 +249,7 @@ namespace ProjetoC_
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao gravar produto: " + ex.Message);
+                MessageBox.Show("Erro ao gravar cliente: " + ex.Message);
             }
 
         }
@@ -265,8 +272,8 @@ namespace ProjetoC_
 
             try
             {
-                ProdutoService produtoService = new ProdutoService();
-                bool sucesso = await produtoService.ExcluirProduto(codigo);
+                ClienteService clienteService = new ClienteService();
+                bool sucesso = await clienteService.ExcluirCliente(codigo);
 
                 if (!sucesso)
                 {
@@ -274,12 +281,12 @@ namespace ProjetoC_
                     return;
                 }
 
-                _listaProdutos.RemoveAt(_indiceAtual); // Remove da lista local
+                _listaClientes.RemoveAt(_indiceAtual); // Remove da lista local
                 toolProximo_Click(sender, e);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao excluir produto do banco: " + ex.Message);
+                MessageBox.Show("Erro ao excluir cliente do banco: " + ex.Message);
                 return;
             }
         }
@@ -290,7 +297,7 @@ namespace ProjetoC_
         }
         private void toolPrimeiro_Click(object sender, EventArgs e)
         {
-            if (_listaProdutos.Count > 0)
+            if (_listaClientes.Count > 0)
             {
                 _indiceAtual = 0;
                 preencherCampos();
@@ -306,37 +313,39 @@ namespace ProjetoC_
         }
         private void toolProximo_Click(object sender, EventArgs e)
         {
-            if (_indiceAtual < _listaProdutos.Count - 1)
+            if (_indiceAtual < _listaClientes.Count - 1)
             {
                 _indiceAtual++;
                 preencherCampos();
             }
-            else if (_indiceAtual > _listaProdutos.Count - 1)
+            else if (_indiceAtual > _listaClientes.Count - 1)
             {
-                _indiceAtual = _listaProdutos.Count - 1; // no caso de já estar no último, mantém o índice
+                _indiceAtual = _listaClientes.Count - 1; // no caso de já estar no último, mantém o índice
                 preencherCampos();
             }
         }
         private void toolUltimo_Click(object sender, EventArgs e)
         {
-            if (_listaProdutos.Count > 0)
+            if (_listaClientes.Count > 0)
             {
-                _indiceAtual = _listaProdutos.Count - 1;
+                _indiceAtual = _listaClientes.Count - 1;
                 preencherCampos();
             }
         }
 
         private void preencherCampos()
         {
-            if (_listaProdutos.Count > 0 && _indiceAtual >= 0 && _indiceAtual < _listaProdutos.Count)
+            if (_listaClientes.Count > 0 && _indiceAtual >= 0 && _indiceAtual < _listaClientes.Count)
             {
-                var op = _listaProdutos[_indiceAtual];
+                var op = _listaClientes[_indiceAtual];
                 txtCodigo.Text = op.Codigo.ToString();
                 txtNome.Text = op.Nome;
-                txtValor.Text = op.Valor.ToString("F2");
+                cmbTipoDocumento.SelectedItem = op.TipoDocumento;
+                txtDocumento.Text = op.Documento;
+                txtTelefone.Text = op.Telefone;
                 chkInativo.Checked = op.Inativo == 1;
 
-                lblContagem.Text = $"{_indiceAtual + 1} de {_listaProdutos.Count}";
+                lblContagem.Text = $"{_indiceAtual + 1} de {_listaClientes.Count}";
             }
             else
             {
@@ -347,7 +356,9 @@ namespace ProjetoC_
         {
             txtCodigo.Text = "";
             txtNome.Text = "";
-            txtValor.Text = "";
+            cmbTipoDocumento.SelectedIndex = -1;
+            txtDocumento.Text = "";
+            txtTelefone.Text = "";
             chkInativo.Checked = false;
             lblContagem.Text = "0 de 0";
         }
@@ -369,7 +380,7 @@ namespace ProjetoC_
                     return;
                 }
 
-                int indiceEncontrado = _listaProdutos.FindIndex(op => op.Codigo == codigo);
+                int indiceEncontrado = _listaClientes.FindIndex(op => op.Codigo == codigo);
                 if (indiceEncontrado >= 0)
                 {
                     _indiceAtual = indiceEncontrado;
@@ -388,7 +399,7 @@ namespace ProjetoC_
             if (e.KeyCode == Keys.F4)
             {
                 e.Handled = true; // Evita o som de alerta
-                btnListaProduto_Click(sender, e); // Chama o método de pesquisa
+                btnListaCliente_Click(sender, e); // Chama o método de pesquisa
             }
         }
 
@@ -397,12 +408,52 @@ namespace ProjetoC_
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita o som de alerta
-                txtValor.Focus(); // Move o foco para o próximo campo
+                cmbTipoDocumento.Focus(); // Move o foco para o próximo campo
+            }
+        }
+        private void cmbTipoDocumento_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                txtDocumento.Focus(); // Move o foco para o próximo campo
+            }
+        }
+        private void cmbTipoDocumento_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Limpa o texto e remove eventos antigos para não acumular máscaras
+            txtDocumento.Text = "";
+
+            if (cmbTipoDocumento.SelectedIndex == -1)
+            {
+                return;
+            }
+            
+            // Pega o enum selecionado
+            eTipoDocumentoCliente tipoSelecionado = (eTipoDocumentoCliente)cmbTipoDocumento.SelectedItem;
+
+            // Aplica a Máscara ou define o MaxLength conforme o tipo selecionado
+            if (tipoSelecionado == eTipoDocumentoCliente.Outros)
+            {
+                txtDocumento.MaxLength = 50;
+            }
+            else
+            {
+                FuncoesUI.AplicarMascaraDocumento(txtDocumento, tipoSelecionado);
+            }
+        }
+        private void txtDocumento_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                txtTelefone.Focus(); // Move o foco para o próximo campo
             }
         }
 
-        private void txtValor_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtTelefone_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // 1. Lógica de Atalho para Gravação (Enter)
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita o som de alerta
@@ -413,6 +464,18 @@ namespace ProjetoC_
                     toolGravar_Click(sender, e); // Chama o método de gravação
                 }
             }
+
+            // 2. Lógica de Restrição (Somente números e símbolos de telefone)
+            if (!FuncoesUI.CaractereValidoTelefone(e.KeyChar))
+            {
+                e.Handled = true; // Bloqueia letras e outros símbolos
+            }
+
+            // 3. Lógica de Tamanho Máximo (Manual ou via Propriedade MaxLength)
+            if (txtTelefone.Text.Length >= 15 && e.KeyChar != (char)8)
+            {
+                e.Handled = true;
+            }
         }
 
         private void validaCampos()
@@ -422,47 +485,61 @@ namespace ProjetoC_
                 throw new Exception("O campo Nome é obrigatório.");
             }
 
-            if (string.IsNullOrWhiteSpace(txtValor.Text))
+            if (cmbTipoDocumento.SelectedIndex == -1)
             {
-                throw new Exception("O campo Valor é obrigatório.");
+                throw new Exception("O campo Tipo de Documento é obrigatório.");
             }
 
-            if (!decimal.TryParse(txtValor.Text, out decimal valor))
+            if (string.IsNullOrWhiteSpace(txtDocumento.Text))
             {
-                throw new Exception("O campo Valor deve ser um número válido.");
+                throw new Exception("O campo Documento é obrigatório.");
             }
+
+            if (string.IsNullOrWhiteSpace(txtTelefone.Text))
+            {
+                throw new Exception("O campo Telefone é obrigatório.");
+            }
+
         }
 
-        private async void btnListaProduto_Click(object sender, EventArgs e)
+        private async void btnListaCliente_Click(object sender, EventArgs e)
         {
-            var listaPr = new List<Produto>();
+            var listaCl = new List<Cliente>();
             try
             {
-                var service = new ProdutoService();
-                listaPr = await service.CarregarProdutos();
+                var service = new ClienteService();
+                listaCl = await service.CarregarClientes();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar operadores para pesquisa: " + ex.Message);
+                MessageBox.Show("Erro ao carregar clientes para pesquisa: " + ex.Message);
                 return;
             }
             // Convertemos a lista de Operadores para uma lista de Objetos
-            var listaParaPesquisa = listaPr.Cast<object>().ToList();
+            var listaParaPesquisa = listaCl.Cast<object>().ToList();
 
             using (var frm = new frmListaPesquisa(listaParaPesquisa))
             {
-                frm.Text = "Pesquisa de Produtos";
+                frm.Text = "Pesquisa de Clientes";
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
-                    // converte de volta object para Produto(Cast)
-                    var prSelecionado = (Produto)frm.ObjetoSelecionado;
+                    // converte de volta object para Clientes(Cast)
+                    var clSelecionado = (Cliente)frm.ObjetoSelecionado;
 
                     // Sincroniza o índice
-                    _listaProdutos = listaPr; // Atualiza a lista local com os dados mais recentes
-                    _indiceAtual = _listaProdutos.FindIndex(x => x.Codigo == prSelecionado.Codigo);
+                    _listaClientes = listaCl; // Atualiza a lista local com os dados mais recentes
+                    _indiceAtual = _listaClientes.FindIndex(x => x.Codigo == clSelecionado.Codigo);
                     preencherCampos();
                 }
             }
+        }
+        private void ConfigurarComboDocumento()
+        {
+            // Preenche o ComboBox com os nomes do Enum
+            cmbTipoDocumento.DataSource = Enum.GetValues(typeof(eTipoDocumentoCliente));
+
+            // Valor padrão
+            cmbTipoDocumento.SelectedIndex = -1;
         }
     }
 }

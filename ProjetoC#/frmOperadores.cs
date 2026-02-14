@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using ProjetoC_.Classes;
+using ProjetoC_.Models;
 using ProjetoC_.Enums;
 using ProjetoC_.Service;
 using ProjetoC_.Utils;
@@ -21,7 +21,7 @@ namespace ProjetoC_
         private List<Operador> _listaOperadores;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
-        private ModoTela _eModoAtual;
+        private eModoTela _eModoAtual;
 
         public frmOperadores()
         {
@@ -60,31 +60,31 @@ namespace ProjetoC_
 
         private void fromOperadores_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F2 && _eModoAtual == ModoTela.Consulta)
+            if (e.KeyCode == Keys.F2 && _eModoAtual == eModoTela.Consulta)
             {
                 e.Handled = true; // Evita o som de alerta
                 modoInclusao();
             }
-            if (e.KeyCode == Keys.F5 && _eModoAtual == ModoTela.Consulta)
+            if (e.KeyCode == Keys.F5 && _eModoAtual == eModoTela.Consulta)
             {
                 e.Handled = true; // Evita o som de alerta
                 modoAlteracao();
             }
             if (e.KeyCode == Keys.F3 && 
-                (_eModoAtual == ModoTela.Alteracao ||
-                _eModoAtual == ModoTela.Inclusao))
+                (_eModoAtual == eModoTela.Alteracao ||
+                _eModoAtual == eModoTela.Inclusao))
             {
                 e.Handled = true; // Evita o som de alerta
                 toolGravar_Click(sender, e); // Chama o método de gravação
             }
             if (e.KeyCode == Keys.Escape && 
-                (_eModoAtual == ModoTela.Alteracao ||
-                _eModoAtual == ModoTela.Inclusao))
+                (_eModoAtual == eModoTela.Alteracao ||
+                _eModoAtual == eModoTela.Inclusao))
             {
                 e.Handled = true; // Evita o som de alerta
                 toolDesfazer_Click(sender, e); // Chama o método de desfazer
             }
-            else if (e.KeyCode == Keys.Escape && _eModoAtual == ModoTela.Consulta)
+            else if (e.KeyCode == Keys.Escape && _eModoAtual == eModoTela.Consulta)
             {
                 e.Handled = true; // Evita o som de alerta
                 this.Close(); // Fecha o formulário
@@ -112,7 +112,7 @@ namespace ProjetoC_
 
             txtCodigo.Focus();
 
-            _eModoAtual = ModoTela.Consulta;
+            _eModoAtual = eModoTela.Consulta;
         }
 
         private void modoInclusao()
@@ -141,7 +141,7 @@ namespace ProjetoC_
 
             txtNome.Focus();
 
-            _eModoAtual = ModoTela.Inclusao;
+            _eModoAtual = eModoTela.Inclusao;
         }
 
         private void modoAlteracao()
@@ -165,7 +165,7 @@ namespace ProjetoC_
 
             txtNome.Focus();
 
-            _eModoAtual = ModoTela.Alteracao;
+            _eModoAtual = eModoTela.Alteracao;
         }
 
         private void toolNovo_Click(object sender, EventArgs e)
@@ -203,7 +203,7 @@ namespace ProjetoC_
 
                 try
                 {
-                    if (_eModoAtual == ModoTela.Inclusao)
+                    if (_eModoAtual == eModoTela.Inclusao)
                     {
                         // 1. Use o await para esperar a gravação. 
                         idGerado = await operadorService.InserirOperador(novoOperador);
@@ -231,7 +231,7 @@ namespace ProjetoC_
                     return;
                 }
 
-                if (_eModoAtual == ModoTela.Alteracao)
+                if (_eModoAtual == eModoTela.Alteracao)
                     _listaOperadores[_indiceAtual] = novoOperador; // Atualiza o registro existente
                 else
                 {
@@ -364,7 +364,7 @@ namespace ProjetoC_
                 e.Handled = true; // Ignora o caractere
             }
 
-            if (_eModoAtual == ModoTela.Consulta && e.KeyChar == (char)Keys.Enter)
+            if (_eModoAtual == eModoTela.Consulta && e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita o som de alerta
                 if (!int.TryParse(txtCodigo.Text, out int codigo))

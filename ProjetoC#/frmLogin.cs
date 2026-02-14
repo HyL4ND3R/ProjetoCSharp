@@ -1,5 +1,5 @@
 using Microsoft.VisualBasic;
-using ProjetoC_.Classes;
+using ProjetoC_.Models;
 using ProjetoC_.Service;
 using ProjetoC_.Utils;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace ProjetoC_
 
         // Instancia o serviço
         private readonly DatabaseService _dbService;
-        public static Operador operadorLogado { get; private set; } = null;
+        public static Cliente operadorLogado { get; private set; } = null;
 
         public frmLogin()
         {
@@ -56,7 +56,7 @@ namespace ProjetoC_
 
                 // 4. A Mágica: Uma única linha chama o serviço
                 // Note o <Operador>: Isso diz ao serviço para devolver uma lista de Operadores
-                List<Operador> resultado = await _dbService.ExecutarConsultaAsync<Operador>(query, parametros);
+                List<Cliente> resultado = await _dbService.ExecutarConsultaAsync<Cliente>(query, parametros);
 
                 // 5. Verifica o resultado
                 if (resultado != null && resultado.Count > 0)
