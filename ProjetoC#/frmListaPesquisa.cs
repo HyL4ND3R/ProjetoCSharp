@@ -37,6 +37,9 @@ namespace ProjetoC_
             if (dgvListaPesquisa.Columns.Contains("Admin"))
                 dgvListaPesquisa.Columns["Admin"].HeaderText = "Adminstrador";
 
+            if (dgvListaPesquisa.Columns.Contains("Controle"))
+                dgvListaPesquisa.Columns["Controle"].Visible = false; 
+
             dgvListaPesquisa.CellFormatting += dgvListaPesquisa_CellFormatting;
         }
 

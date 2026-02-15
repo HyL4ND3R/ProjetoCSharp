@@ -11,6 +11,7 @@ namespace ProjetoC_.Models
         public int ClienteCodigo { get; set; }
         public string? ClienteNome { get; set; }
         public DateTime DataPedido { get; set; }
+        public Decimal? QtdeTotal { get; set; }
         public Decimal ValorTotal { get; set; }
 
         public override string ToString()

@@ -15,7 +15,7 @@ namespace ProjetoC_
     public partial class frmPedidos : Form
     {
         private List<Pedido> _listaPedidos;
-        private List<PedidoItem> _listaItensPedido;
+        private BindingList<PedidoItem> _listaItensPedido;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
         private int _controlePedidoItemAtual = 0;
@@ -35,7 +35,8 @@ namespace ProjetoC_
         private async void frmProdutos_Load(object sender, EventArgs e)
         {
             _listaPedidos = new List<Pedido>();
-            modoConsultaPedido();
+            ConfigurarGradeItens();
+            ModoConsultaPedido();
 
             try
             {
@@ -78,7 +79,7 @@ namespace ProjetoC_
                     if (_eModoAtualPedido == eModoTela.Consulta)
                     {
                         e.Handled = true;
-                        modoInclusaoPedido();
+                        ModoInclusaoPedido();
                     }
                     break;
 
@@ -86,7 +87,7 @@ namespace ProjetoC_
                     if (_eModoAtualPedido == eModoTela.Consulta)
                     {
                         e.Handled = true;
-                        modoAlteracaoPedido();
+                        ModoAlteracaoPedido();
                     }
                     break;
 
@@ -112,7 +113,7 @@ namespace ProjetoC_
             }
         }
 
-        private void modoConsultaPedido()
+        private void ModoConsultaPedido()
         {
             // Tools
             toolNovo.Enabled = true;
@@ -148,13 +149,15 @@ namespace ProjetoC_
             txtProdutoValorUn.Enabled = false;
             txtProdutoValorTotal.Enabled = false;
 
+            dgvItens.Enabled = true;
+
             txtCodigo.Focus();
 
             _eModoAtualPedido = eModoTela.Consulta;
             _eModoAtualItem = eModoTela.Consulta;
         }
 
-        private void modoInclusaoPedido()
+        private void ModoInclusaoPedido()
         {
             toolNovo.Enabled = false;
             toolGravar.Enabled = true;
@@ -168,14 +171,14 @@ namespace ProjetoC_
 
             // Campos Pedido
             txtCodigo.Enabled = false;
-            //ver aqui para puxar o próximo código disponível
+            txtCodigo.Text = (_listaPedidos.Count > 0 ? _listaPedidos.Max(i => i.Codigo) + 1 : 1).ToString();
             btnListaPedido.Enabled = false;
             txtCodCliente.Enabled = true;
             txtCodCliente.Text = "";
             btnListaCliente.Enabled = true;
             txtNomeCliente.Enabled = true;
             txtNomeCliente.Text = "";
-            dtpDataPedido.Enabled = false;
+            dtpDataPedido.Enabled = true;
             dtpDataPedido.Value = DateTime.Now;
 
             // Botões itens
@@ -193,13 +196,16 @@ namespace ProjetoC_
             txtProdutoValorUn.Enabled = false;
             txtProdutoValorTotal.Enabled = false;
 
-            txtProdutoNome.Focus();
+            _listaItensPedido.Clear();
+            dgvItens.Enabled = false;
+
+            txtProdutoCod.Focus();
 
             _eModoAtualPedido = eModoTela.Inclusao;
             _eModoAtualItem = eModoTela.Bloqueado;
         }
 
-        private void modoAlteracaoPedido()
+        private void ModoAlteracaoPedido()
         {
             toolNovo.Enabled = false;
             toolGravar.Enabled = true;
@@ -218,7 +224,7 @@ namespace ProjetoC_
             txtCodCliente.Enabled = true;
             btnListaCliente.Enabled = true;
             txtNomeCliente.Enabled = true;
-            dtpDataPedido.Enabled = false;
+            dtpDataPedido.Enabled = true;
 
             // Botões itens
             btnNovoItem.Enabled = false;
@@ -235,12 +241,14 @@ namespace ProjetoC_
             txtProdutoValorUn.Enabled = false;
             txtProdutoValorTotal.Enabled = false;
 
+            dgvItens.Enabled = true;
+
             txtProdutoNome.Focus();
 
             _eModoAtualPedido = eModoTela.Alteracao;
             _eModoAtualItem = eModoTela.Bloqueado;
         }
-        private void modoInclusaoItem()
+        private void ModoInclusaoItem()
         {
             toolNovo.Enabled = false;
             toolGravar.Enabled = false;
@@ -269,23 +277,25 @@ namespace ProjetoC_
 
             // Campos itens
             txtProdutoCod.Enabled = true;
-            txtProdutoNome.Text = "";
+            txtProdutoCod.Text = "";
             btnListaProduto.Enabled = true;
             txtProdutoNome.Enabled = true;
             txtProdutoNome.Text = "";
             txtProdutoQtde.Enabled = true;
-            txtProdutoQtde.Text = "";
-            txtProdutoValorUn.Enabled = false;
+            txtProdutoQtde.Text = "1,00";
+            txtProdutoValorUn.Enabled = true;
             txtProdutoValorUn.Text = "";
-            txtProdutoValorTotal.Enabled = false;
+            txtProdutoValorTotal.Enabled = true;
             txtProdutoValorTotal.Text = "";
+
+            dgvItens.Enabled = true;
 
             txtProdutoCod.Focus();
 
             _eModoAtualPedido = eModoTela.Bloqueado;
             _eModoAtualItem = eModoTela.Inclusao;
         }
-        private void modoAlteracaoItem()
+        private void ModoAlteracaoItem()
         {
             toolNovo.Enabled = false;
             toolGravar.Enabled = false;
@@ -317,15 +327,17 @@ namespace ProjetoC_
             btnListaProduto.Enabled = true;
             txtProdutoNome.Enabled = true;
             txtProdutoQtde.Enabled = true;
-            txtProdutoValorUn.Enabled = false;
-            txtProdutoValorTotal.Enabled = false;
+            txtProdutoValorUn.Enabled = true;
+            txtProdutoValorTotal.Enabled = true;
+
+            dgvItens.Enabled = true;
 
             txtProdutoCod.Focus();
 
             _eModoAtualPedido = eModoTela.Bloqueado;
             _eModoAtualItem = eModoTela.Alteracao;
         }
-        private void cancelarItem()
+        private void CancelarItem()
         {
             // Tools
             toolNovo.Enabled = true;
@@ -361,6 +373,8 @@ namespace ProjetoC_
             txtProdutoValorUn.Enabled = false;
             txtProdutoValorTotal.Enabled = false;
 
+            dgvItens.Enabled = true;
+
             preencherCamposItens();
 
             _eModoAtualPedido = eModoTela.Consulta;
@@ -369,7 +383,7 @@ namespace ProjetoC_
 
         private void toolNovo_Click(object sender, EventArgs e)
         {
-            modoInclusaoPedido();
+            ModoInclusaoPedido();
         }
         private async void toolGravar_Click(object sender, EventArgs e)
         {
@@ -385,7 +399,7 @@ namespace ProjetoC_
 
             try
             {
-                PedidoService PedidoService = new PedidoService();
+                PedidoService pedidoService = new PedidoService();
                 Pedido novoPedido = new Pedido
                 {
                     Codigo = int.Parse(txtCodigo.Text),
@@ -400,8 +414,21 @@ namespace ProjetoC_
                 {
                     if (_eModoAtualPedido == eModoTela.Inclusao)
                     {
-                        // 1. Use o await para esperar a gravação. 
-                        idGerado = await PedidoService.InserirPedido(novoPedido);
+                        // 1. Verifica se o código que o usuário tentou já existe
+                        var pedidoExistente = await pedidoService.BuscarPedidoPorCodigo(novoPedido.Codigo);
+
+                        if (pedidoExistente != null)
+                        {
+                            // 2. Se existe,  o usuário e busca o próximo vago
+                            MessageBox.Show($"O código {novoPedido.Codigo} já existe. Será atribuído o próximo código disponível.");
+
+                            int codigoVago = await pedidoService.BuscarProximoCodigoDisponivel();
+                            novoPedido.Codigo = codigoVago;
+                        }
+
+                        // 3. Agora o novoPedido.Codigo é o próximo vago.
+
+                        idGerado = await pedidoService.InserirPedido(novoPedido);
 
                         if (idGerado <= 0)
                         {
@@ -413,7 +440,7 @@ namespace ProjetoC_
                     {
                         novoPedido.Controle = _listaPedidos[_indiceAtual].Controle;
 
-                        bool sucesso = await PedidoService.AlterarPedido(novoPedido);
+                        bool sucesso = await pedidoService.AlterarPedido(novoPedido);
 
                         if (!sucesso)
                         {
@@ -437,7 +464,7 @@ namespace ProjetoC_
                     _indiceAtual = _listaPedidos.Count - 1; // Posiciona no novo registro
                 }
 
-                modoConsultaPedido();
+                ModoConsultaPedido();
                 preencherCampos();
             }
             catch (Exception ex)
@@ -448,7 +475,7 @@ namespace ProjetoC_
         }
         private void toolAlterar_Click(object sender, EventArgs e)
         {
-            modoAlteracaoPedido();
+            ModoAlteracaoPedido();
         }
         private async void toolExcluir_Click(object sender, EventArgs e)
         {
@@ -486,8 +513,9 @@ namespace ProjetoC_
         }
         private void toolDesfazer_Click(object sender, EventArgs e)
         {
-            modoConsultaPedido();
+            ModoConsultaPedido();
             preencherCampos();
+            preencherItensPedido();
         }
         private void toolPrimeiro_Click(object sender, EventArgs e)
         {
@@ -541,7 +569,7 @@ namespace ProjetoC_
                 txtCodCliente.Text = obj.ClienteCodigo.ToString();
                 txtNomeCliente.Text = obj.ClienteNome;
                 dtpDataPedido.Value = obj.DataPedido;
-                txtValorTotal.Text = obj.ValorTotal.ToString("F2");
+                txtValorTotal.Text = obj.ValorTotal.ToString("F2") ?? "";
 
                 lblContagem.Text = $"{_indiceAtual + 1} de {_listaPedidos.Count}";
             }
@@ -561,8 +589,8 @@ namespace ProjetoC_
             try
             {
                 PedidoItemService service = new PedidoItemService();
-                _listaItensPedido = await service.CarregarItensPedido(_listaPedidos[_indiceAtual].Controle);
-
+                var _listaItensPedidoApi = await service.CarregarItensPedido(_listaPedidos[_indiceAtual].Controle);
+                _listaItensPedido = new BindingList<PedidoItem>(_listaItensPedidoApi);
                 dgvItens.DataSource = _listaItensPedido;
 
                 preencherCamposItens();
@@ -575,6 +603,10 @@ namespace ProjetoC_
 
         private void preencherCamposItens()
         {
+
+            if (_eModoAtualItem == eModoTela.Alteracao
+                || _eModoAtualItem == eModoTela.Inclusao) return;
+
             if ((dgvItens.CurrentRow == null)) return;
 
             var itemSelecionado = (PedidoItem)dgvItens.CurrentRow.DataBoundItem;
@@ -654,7 +686,7 @@ namespace ProjetoC_
             if (e.KeyCode == Keys.F4)
             {
                 e.Handled = true; // Evita o som de alerta
-                btnListaProduto_Click(sender, e); // Chama o método de pesquisa
+                btnListaPedido_Click(sender, e);
             }
         }
 
@@ -731,9 +763,9 @@ namespace ProjetoC_
                     txtProdutoCod.Focus();
                     return;
                 }
-                
+
                 Produto produto = null;
-                
+
                 try
                 {
                     ProdutoService service = new ProdutoService();
@@ -743,11 +775,12 @@ namespace ProjetoC_
                 {
                     MessageBox.Show("Erro na busca do produto: " + ex.ToString());
                 }
-                
+
                 if (produto != null)
                 {
                     txtProdutoCod.Text = produto.Codigo.ToString();
                     txtProdutoNome.Text = produto.Nome;
+                    txtProdutoValorUn.Text = produto.Valor.ToString("F2");
                     txtProdutoNome.Focus();
                 }
                 else
@@ -814,6 +847,9 @@ namespace ProjetoC_
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita o som de alerta
+
+                CalcularValorUnItem();
+
                 if (MessageBox.Show("Confirma Gravação?", "Confirmação", MessageBoxButtons.YesNo) == DialogResult.No) return;
                 btnSalvarItem_Click(sender, e); // Chama o método de gravação do item
             }
@@ -828,10 +864,6 @@ namespace ProjetoC_
             if (string.IsNullOrWhiteSpace(txtNomeCliente.Text))
             {
                 throw new Exception("O campo Nome do Cliente é obrigatório.");
-            }
-            if (dtpDataPedido.Value != null)
-            {
-                throw new Exception("A data do pedido é obrigatória.");
             }
         }
 
@@ -930,6 +962,7 @@ namespace ProjetoC_
 
                     txtProdutoCod.Text = prSelecionado.Codigo.ToString();
                     txtProdutoNome.Text = prSelecionado.Nome;
+                    txtProdutoValorUn.Text = prSelecionado.Valor.ToString("F2");
                 }
             }
         }
@@ -966,7 +999,7 @@ namespace ProjetoC_
 
         private void btnNovoItem_Click(object sender, EventArgs e)
         {
-            modoInclusaoItem();
+            ModoInclusaoItem();
         }
 
         private async void btnSalvarItem_Click(object sender, EventArgs e)
@@ -1032,16 +1065,27 @@ namespace ProjetoC_
 
                 if (_eModoAtualItem == eModoTela.Alteracao)
                 {
-                    indiceItem = _listaItensPedido.FindIndex(i => i.Controle == _controlePedidoItemAtual);
-                    _listaItensPedido[indiceItem] = novoItemPedido;// Atualiza o registro existente
+                    var item = _listaItensPedido.FirstOrDefault(i => i.Controle == _controlePedidoItemAtual);
+
+                    if (item != null)
+                    {
+                        int indiceAtual = _listaItensPedido.IndexOf(item);
+                        _listaItensPedido[indiceAtual] = novoItemPedido;
+                    }
+
+                    dgvItens.Refresh(); // Atualiza a grade para refletir as mudanças
+                    dgvItens.Rows[indiceItem].Selected = true; // Seleciona o item alterado na grade
+                    preencherCamposItens(); // Atualiza os campos com o item selecionado
                 }
                 else
                 {
                     novoItemPedido.Controle = idGerado;
                     _listaItensPedido.Add(novoItemPedido); // Adiciona o novo registro
+                    dgvItens.Refresh(); // Atualiza a grade para refletir as mudanças
+                    dgvItens.Rows[_listaItensPedido.Count - 1].Selected = true; // Seleciona o novo item adicionado na grade
                 }
 
-                modoInclusaoItem();
+                ModoInclusaoItem();
             }
             catch (Exception ex)
             {
@@ -1051,7 +1095,7 @@ namespace ProjetoC_
 
         private void btnAlterarItem_Click(object sender, EventArgs e)
         {
-            modoAlteracaoItem();
+            ModoAlteracaoItem();
         }
 
         private async void btnExcluirItem_Click(object sender, EventArgs e)
@@ -1082,9 +1126,23 @@ namespace ProjetoC_
                     return;
                 }
 
-                int indiceAtual = _listaItensPedido.FindIndex(i => i.Controle == controle); // Encontra o índice do item excluído
-                _listaItensPedido.RemoveAt(indiceAtual); // Remove da lista local
-                toolProximo_Click(sender, e);
+                var item = _listaItensPedido.FirstOrDefault(i => i.Controle == controle); // Encontra o índice do item excluído
+                int indiceItem = -1;
+                if (item != null)
+                {
+                    indiceItem = _listaItensPedido.IndexOf(item);
+                    _listaItensPedido.RemoveAt(indiceItem); // Remove da lista local
+                }
+                dgvItens.Refresh();
+                if (dgvItens.Rows.Count > 0)
+                {
+                    dgvItens.Rows[0].Selected = true; // Seleciona o primeiro item da grade após exclusão
+                    preencherCamposItens(); // Atualiza os campos com o item selecionado
+                }
+                else
+                {
+                    limparCamposItens(); // Limpa os campos se não houver mais itens
+                }
             }
             catch (Exception ex)
             {
@@ -1095,11 +1153,94 @@ namespace ProjetoC_
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            cancelarItem();
+            CancelarItem();
         }
+
+        private void txtProdutoQtde_Leave(object sender, EventArgs e)
+        {
+            CalcularValorTotalItem();
+        }
+
+        private void txtProdutoValorUn_Leave(object sender, EventArgs e)
+        {
+            CalcularValorTotalItem();
+        }
+
+        private void CalcularValorTotalItem()
+        {
+            if (decimal.TryParse(txtProdutoQtde.Text, out decimal qtde) &&
+                decimal.TryParse(txtProdutoValorUn.Text, out decimal valorUn))
+            {
+                decimal valorTotal = qtde * valorUn;
+                txtProdutoValorTotal.Text = valorTotal.ToString("F2");
+            }
+        }
+
+        private void CalcularValorUnItem()
+        {
+            if (decimal.TryParse(txtProdutoQtde.Text, out decimal qtde) &&
+                decimal.TryParse(txtProdutoValorTotal.Text, out decimal valorTotal))
+            {
+                decimal valorUn = valorTotal / qtde;
+                txtProdutoValorUn.Text = valorUn.ToString("F2");
+            }
+        }
+
+        private void ConfigurarGradeItens()
+        {
+            dgvItens.ReadOnly = true;
+            dgvItens.AutoGenerateColumns = false;
+            dgvItens.Columns.Clear();
+
+            // Coluna Código do Produto
+            dgvItens.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "ProdutoCodigo", // Nome EXATO da propriedade na sua classe PedidoItem
+                HeaderText = "Cód.",
+                Width = 80,
+                ReadOnly = true
+            });
+
+            // Coluna Descrição (Se você tiver essa propriedade no objeto)
+            dgvItens.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "ProdutoDescricao",
+                HeaderText = "Descrição",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill // Ocupa o espaço restante
+            });
+
+            // Coluna Quantidade
+            dgvItens.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Quantidade",
+                HeaderText = "Qtde",
+                Width = 70,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "N2", Alignment = DataGridViewContentAlignment.MiddleRight }
+            });
+
+            // Coluna Valor Unitário (Com Formatação de Moeda)
+            dgvItens.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "ValorUnitario",
+                HeaderText = "Vlr. Unit.",
+                Width = 100,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "C2", Alignment = DataGridViewContentAlignment.MiddleRight }
+            });
+
+            // Coluna Valor Total (Com Formatação de Moeda)
+            dgvItens.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "ValorTotal",
+                HeaderText = "Total",
+                Width = 100,
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "C2", Alignment = DataGridViewContentAlignment.MiddleRight }
+            });
+        }
+
         /*FAZER:
-            ajustar tabela dos itens, remover colunas controle
             testar demais botões para ver se tudo esta funcionando
+            fazer chamar as SP de calculo total pedido na inserção/alteração/exclusão do item
+            fazer chamar a SP de recálculo do campo ITEM do pedidoitem na exclusão do item
         */
     }
 }

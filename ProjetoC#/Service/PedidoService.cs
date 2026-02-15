@@ -11,13 +11,14 @@ namespace ProjetoC_.Service
 
         public async Task<List<Pedido>> CarregarPedidos()
         {
-            String query = "Select Pedido.Controle Controle, " +
+            string query = "Select Pedido.Controle Controle, " +
                 "Pedido.Codigo Codigo, " +
                 "Cliente.Codigo ClienteCodigo, " +
                 "Cliente.Nome ClienteNome, " +
                 //"FORMAT(Pedido.data,'dd/MM/yyyy') DataPedido, " +
                 "Pedido.data DataPedido, " +
-                "Pedido.ValorTotal ValorTotal " +
+                "ISNULL(Pedido.QtdeTotal, 0) QtdeTotal, " +
+                "ISNULL(Pedido.ValorTotal, 0) ValorTotal " +
                 "from Pedido " +
                 "Inner join Cliente on Cliente.Codigo = Pedido.ClienteCodigo " +
                 "Order by Pedido.Codigo Asc";
@@ -28,10 +29,26 @@ namespace ProjetoC_.Service
             return resultado;
         }
 
+        public async Task<int> BuscarProximoCodigoDisponivel()
+        {
+            // Esta query encontra o menor (codigo + 1) que não existe na tabela
+            string query = @"
+                SELECT ISNULL(MIN(t1.Codigo + 1), 1) AS Proximo 
+                FROM Pedido t1 
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM Pedido t2 WHERE t2.Codigo = t1.Codigo + 1
+                )";
+
+            var resultado = await _dbService.ExecutarConsultaAsync<dynamic>(query, null);
+
+            // Se a tabela estiver vazia, retornamos 1, caso contrário o vago encontrado
+            return (int)resultado[0].Proximo;
+        }
+
         public async Task<Pedido> BuscarPedidoPorCodigo(int codigo)
         {
 
-            String query = "Select Pedido.Controle Controle, " +
+            string query = "Select Pedido.Controle Controle, " +
                 "Pedido.Codigo Codigo, " +
                 "Cliente.Codigo ClienteCodigo, " +
                 "Cliente.Nome ClienteNome, " +
@@ -39,7 +56,7 @@ namespace ProjetoC_.Service
                 "Pedido.ValorTotal ValorTotal " +
                 "from Pedido " +
                 "Inner join Cliente on Cliente.Codigo = Pedido.ClienteCodigo " +
-                "Where Codigo = @Codigo";
+                "Where Pedido.Codigo = @Codigo";
             var parametros = new Dictionary<string, object>()
             {
                 {"@Codigo",codigo}
@@ -47,12 +64,13 @@ namespace ProjetoC_.Service
 
             List<Pedido> resultado = await _dbService.ExecutarConsultaAsync<Pedido>(query, parametros);
 
+            if (resultado.Count == 0) return null;
             return resultado[0];
         }
 
         public async Task<int> InserirPedido(Pedido pedido)
         {
-            String query = "Insert into pedido (Codigo, ClienteCodigo, Data) values (@Codigo, @ClienteCodigo, @Data)";
+            string query = "Insert into pedido (Codigo, ClienteCodigo, Data) values (@Codigo, @ClienteCodigo, @Data)";
             var parametros = new Dictionary<string, object>
             {
                 { "@Codigo", pedido.Codigo},
@@ -66,7 +84,7 @@ namespace ProjetoC_.Service
 
         public async Task<bool> AlterarPedido(Pedido pedido)
         {
-            String query = "UPDATE Pedido Set " +
+            string query = "UPDATE Pedido Set " +
                 "Codigo = @Codigo, " +
                 "ClienteCodigo = @ClienteCodigo, " +
                 "Data = @Data " +
@@ -85,7 +103,7 @@ namespace ProjetoC_.Service
 
         public async Task<bool> ExcluirPedido(int controle)
         {
-            String query = "Delete from Pedido Where Controle = @Controle";
+            string query = "Delete from Pedido Where Controle = @Controle";
             var parametros = new Dictionary<string, object>
             {
                 { "@Controle", controle }

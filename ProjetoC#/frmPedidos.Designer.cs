@@ -93,9 +93,9 @@
             // txtNomeCliente
             // 
             txtNomeCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtNomeCliente.Location = new Point(188, 96);
+            txtNomeCliente.Location = new Point(192, 96);
             txtNomeCliente.Name = "txtNomeCliente";
-            txtNomeCliente.Size = new Size(276, 26);
+            txtNomeCliente.Size = new Size(260, 26);
             txtNomeCliente.TabIndex = 5;
             // 
             // lblCliente
@@ -111,7 +111,7 @@
             // lblContagem
             // 
             lblContagem.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblContagem.Location = new Point(472, 56);
+            lblContagem.Location = new Point(464, 56);
             lblContagem.Name = "lblContagem";
             lblContagem.Size = new Size(128, 26);
             lblContagem.TabIndex = 28;
@@ -268,7 +268,7 @@
             txtCodCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtCodCliente.Location = new Point(112, 96);
             txtCodCliente.Name = "txtCodCliente";
-            txtCodCliente.Size = new Size(48, 26);
+            txtCodCliente.Size = new Size(52, 26);
             txtCodCliente.TabIndex = 3;
             txtCodCliente.KeyDown += txtCodCliente_KeyDown;
             txtCodCliente.KeyPress += txtCodCliente_KeyPress;
@@ -276,7 +276,7 @@
             // btnListaCliente
             // 
             btnListaCliente.Image = (Image)resources.GetObject("btnListaCliente.Image");
-            btnListaCliente.Location = new Point(159, 95);
+            btnListaCliente.Location = new Point(163, 95);
             btnListaCliente.Name = "btnListaCliente";
             btnListaCliente.Size = new Size(30, 28);
             btnListaCliente.TabIndex = 4;
@@ -288,7 +288,7 @@
             dtpDataPedido.CalendarFont = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dtpDataPedido.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dtpDataPedido.Format = DateTimePickerFormat.Short;
-            dtpDataPedido.Location = new Point(344, 56);
+            dtpDataPedido.Location = new Point(332, 56);
             dtpDataPedido.MaxDate = new DateTime(2100, 12, 31, 0, 0, 0, 0);
             dtpDataPedido.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
             dtpDataPedido.Name = "dtpDataPedido";
@@ -300,7 +300,7 @@
             // lblData
             // 
             lblData.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblData.Location = new Point(296, 56);
+            lblData.Location = new Point(284, 56);
             lblData.Name = "lblData";
             lblData.Size = new Size(48, 26);
             lblData.TabIndex = 36;
@@ -369,10 +369,13 @@
             // 
             // dgvItens
             // 
+            dgvItens.AllowUserToAddRows = false;
+            dgvItens.AllowUserToDeleteRows = false;
             dgvItens.AllowUserToOrderColumns = true;
             dgvItens.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvItens.Location = new Point(208, 216);
             dgvItens.Name = "dgvItens";
+            dgvItens.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvItens.Size = new Size(664, 240);
             dgvItens.TabIndex = 42;
             dgvItens.SelectionChanged += dgvItens_SelectionChanged;
@@ -380,9 +383,9 @@
             // txtProdutoCod
             // 
             txtProdutoCod.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtProdutoCod.Location = new Point(112, 184);
+            txtProdutoCod.Location = new Point(113, 184);
             txtProdutoCod.Name = "txtProdutoCod";
-            txtProdutoCod.Size = new Size(72, 26);
+            txtProdutoCod.Size = new Size(73, 26);
             txtProdutoCod.TabIndex = 12;
             txtProdutoCod.KeyDown += txtProdutoCod_KeyDown;
             txtProdutoCod.KeyPress += txtProdutoCod_KeyPress;
@@ -390,7 +393,7 @@
             // btnListaProduto
             // 
             btnListaProduto.Image = (Image)resources.GetObject("btnListaProduto.Image");
-            btnListaProduto.Location = new Point(184, 183);
+            btnListaProduto.Location = new Point(185, 183);
             btnListaProduto.Name = "btnListaProduto";
             btnListaProduto.Size = new Size(30, 28);
             btnListaProduto.TabIndex = 13;
@@ -401,7 +404,7 @@
             txtProdutoNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoNome.Location = new Point(214, 184);
             txtProdutoNome.Name = "txtProdutoNome";
-            txtProdutoNome.Size = new Size(276, 26);
+            txtProdutoNome.Size = new Size(278, 26);
             txtProdutoNome.TabIndex = 14;
             txtProdutoNome.KeyPress += txtProdutoDescricao_KeyPress;
             // 
@@ -418,25 +421,27 @@
             // txtProdutoQtde
             // 
             txtProdutoQtde.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtProdutoQtde.Location = new Point(112, 216);
+            txtProdutoQtde.Location = new Point(113, 216);
             txtProdutoQtde.Name = "txtProdutoQtde";
             txtProdutoQtde.Size = new Size(88, 26);
             txtProdutoQtde.TabIndex = 15;
             txtProdutoQtde.KeyPress += txtProdutoQtde_KeyPress;
+            txtProdutoQtde.Leave += txtProdutoQtde_Leave;
             // 
             // txtProdutoValorUn
             // 
             txtProdutoValorUn.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtProdutoValorUn.Location = new Point(112, 248);
+            txtProdutoValorUn.Location = new Point(113, 248);
             txtProdutoValorUn.Name = "txtProdutoValorUn";
             txtProdutoValorUn.Size = new Size(88, 26);
             txtProdutoValorUn.TabIndex = 16;
             txtProdutoValorUn.KeyPress += txtProdutoValorUn_KeyPress;
+            txtProdutoValorUn.Leave += txtProdutoValorUn_Leave;
             // 
             // txtProdutoValorTotal
             // 
             txtProdutoValorTotal.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtProdutoValorTotal.Location = new Point(112, 280);
+            txtProdutoValorTotal.Location = new Point(113, 280);
             txtProdutoValorTotal.Name = "txtProdutoValorTotal";
             txtProdutoValorTotal.Size = new Size(88, 26);
             txtProdutoValorTotal.TabIndex = 17;
@@ -506,9 +511,11 @@
             Controls.Add(txtCodigo);
             Controls.Add(lblCodigo);
             Controls.Add(toolStrip);
+            KeyPreview = true;
             Name = "frmPedidos";
             Text = "frmPedido";
             Load += frmProdutos_Load;
+            KeyDown += frmPedidos_KeyDown;
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvItens).EndInit();
