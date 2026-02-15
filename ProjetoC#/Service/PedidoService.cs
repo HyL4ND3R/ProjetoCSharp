@@ -15,7 +15,8 @@ namespace ProjetoC_.Service
                 "Pedido.Codigo Codigo, " +
                 "Cliente.Codigo ClienteCodigo, " +
                 "Cliente.Nome ClienteNome, " +
-                "FORMAT(Pedido.data,'dd/MM/yyyy') DataPedido, " +
+                //"FORMAT(Pedido.data,'dd/MM/yyyy') DataPedido, " +
+                "Pedido.data DataPedido, " +
                 "Pedido.ValorTotal ValorTotal " +
                 "from Pedido " +
                 "Inner join Cliente on Cliente.Codigo = Pedido.ClienteCodigo " +

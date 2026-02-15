@@ -18,6 +18,7 @@ namespace ProjetoC_
         private List<PedidoItem> _listaItensPedido;
         // Índice para controle de navegação, -1 indica que não há registro posicionado
         private int _indiceAtual = -1;
+        private int _controlePedidoItemAtual = 0;
         private eModoTela _eModoAtualPedido;
         private eModoTela _eModoAtualItem;
 
@@ -38,15 +39,20 @@ namespace ProjetoC_
 
             try
             {
-                PedidoService pedido = new PedidoService();
+                PedidoService pedidoService = new PedidoService();
 
-                // Carrega os operadores usando o serviço
-                _listaPedidos = await pedido.CarregarPedidos();
+                _listaPedidos = await pedidoService.CarregarPedidos();
 
                 if (_listaPedidos.Count > 0)
                 {
                     _indiceAtual = _listaPedidos.Count - 1;
                     preencherCampos();
+                    preencherItensPedido();
+                    if (dgvItens.Rows.Count > 0)
+                    {
+                        dgvItens.Rows[0].Selected = true;
+                        preencherCamposItens();
+                    }
                 }
                 else
                 {
@@ -57,7 +63,7 @@ namespace ProjetoC_
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar pedidos: " + ex.Message);
+                MessageBox.Show("Erro ao carregar Dados: " + ex.Message);
             }
         }
 
@@ -394,7 +400,6 @@ namespace ProjetoC_
                 {
                     if (_eModoAtualPedido == eModoTela.Inclusao)
                     {
-                        novoPedido.Controle = _listaPedidos[_indiceAtual].Controle;
                         // 1. Use o await para esperar a gravação. 
                         idGerado = await PedidoService.InserirPedido(novoPedido);
 
@@ -406,6 +411,8 @@ namespace ProjetoC_
                     }
                     else
                     {
+                        novoPedido.Controle = _listaPedidos[_indiceAtual].Controle;
+
                         bool sucesso = await PedidoService.AlterarPedido(novoPedido);
 
                         if (!sucesso)
@@ -568,12 +575,13 @@ namespace ProjetoC_
 
         private void preencherCamposItens()
         {
-            if (!(dgvItens.CurrentRow == null)) return;
+            if ((dgvItens.CurrentRow == null)) return;
 
             var itemSelecionado = (PedidoItem)dgvItens.CurrentRow.DataBoundItem;
 
             if (itemSelecionado != null)
             {
+                _controlePedidoItemAtual = itemSelecionado.Controle; // Armazena o controle do item selecionado para futuras operações
                 txtProdutoCod.Text = itemSelecionado.ProdutoCodigo.ToString();
                 txtProdutoNome.Text = itemSelecionado.ProdutoDescricao;
                 txtProdutoQtde.Text = itemSelecionado.Quantidade.ToString("F2");
@@ -599,6 +607,14 @@ namespace ProjetoC_
             txtProdutoQtde.Text = "";
             txtProdutoValorUn.Text = "";
             txtProdutoValorTotal.Text = "";
+        }
+
+        private void dgvItens_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvItens.CurrentRow != null)
+            {
+                preencherCamposItens();
+            }
         }
 
         private void txtCodigo_KeyPress(object sender, KeyPressEventArgs e)
@@ -642,9 +658,50 @@ namespace ProjetoC_
             }
         }
 
-        private void txtCodCliente_KeyPress(object sender, KeyPressEventArgs e)
+        private async void txtCodCliente_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //fazer aqui aquela putaria lá de buscar o código
+            // Permitir apenas números e controle de backspace
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignora o caractere
+            }
+
+            if ((_eModoAtualPedido == eModoTela.Alteracao || _eModoAtualPedido == eModoTela.Inclusao)
+                && e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                if (!int.TryParse(txtCodCliente.Text, out int codigo))
+                {
+                    MessageBox.Show("Código inválido.");
+                    txtCodCliente.Focus();
+                    return;
+                }
+
+                ClienteService service = new ClienteService();
+
+                var cliente = await service.BuscarClientePorCodigo(codigo);
+
+                if (cliente != null)
+                {
+                    txtCodCliente.Text = cliente.Codigo.ToString();
+                    txtNomeCliente.Text = cliente.Nome;
+                    dtpDataPedido.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Código não encontrado.");
+                    txtCodCliente.Focus();
+                }
+            }
+        }
+
+        private void txtCodCliente_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F4)
+            {
+                e.Handled = true; // Evita o som de alerta
+                btnListaCliente_Click(sender, e); // Chama o método de pesquisa
+            }
         }
 
         private void dtpDataPedido_KeyPress(object sender, KeyPressEventArgs e)
@@ -653,6 +710,112 @@ namespace ProjetoC_
             {
                 e.Handled = true; // Evita o som de alerta
                 toolGravar_Click(sender, e); // Chama o método de gravação
+            }
+        }
+
+        private async void txtProdutoCod_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir apenas números e controle de backspace
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignora o caractere
+            }
+
+            if ((_eModoAtualItem == eModoTela.Alteracao || _eModoAtualItem == eModoTela.Inclusao)
+                && e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                if (!int.TryParse(txtProdutoCod.Text, out int codigo))
+                {
+                    MessageBox.Show("Código inválido.");
+                    txtProdutoCod.Focus();
+                    return;
+                }
+                
+                Produto produto = null;
+                
+                try
+                {
+                    ProdutoService service = new ProdutoService();
+                    produto = await service.BuscarProdutoPorCodigo(codigo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro na busca do produto: " + ex.ToString());
+                }
+                
+                if (produto != null)
+                {
+                    txtProdutoCod.Text = produto.Codigo.ToString();
+                    txtProdutoNome.Text = produto.Nome;
+                    txtProdutoNome.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Código não encontrado.");
+                    txtProdutoCod.Focus();
+                }
+            }
+        }
+
+        private void txtProdutoCod_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F4)
+            {
+                e.Handled = true; // Evita o som de alerta
+                btnListaProduto_Click(sender, e); // Chama o método de pesquisa
+            }
+        }
+
+        private void txtProdutoDescricao_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                txtProdutoQtde.Focus();
+            }
+        }
+
+        private void txtProdutoQtde_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir apenas números, vírgula e controle de backspace
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true; // Ignora o caractere
+            }
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                txtProdutoValorUn.Focus();
+            }
+        }
+
+        private void txtProdutoValorUn_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir apenas números, vírgula e controle de backspace
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true; // Ignora o caractere
+            }
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                txtProdutoValorTotal.Focus();
+            }
+        }
+
+        private void txtProdutoValorTotal_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir apenas números, vírgula e controle de backspace
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true; // Ignora o caractere
+            }
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true; // Evita o som de alerta
+                if (MessageBox.Show("Confirma Gravação?", "Confirmação", MessageBoxButtons.YesNo) == DialogResult.No) return;
+                btnSalvarItem_Click(sender, e); // Chama o método de gravação do item
             }
         }
 
@@ -708,6 +871,39 @@ namespace ProjetoC_
             }
         }
 
+        private async void btnListaPedido_Click(object sender, EventArgs e)
+        {
+            var listaPd = new List<Pedido>();
+            try
+            {
+                var service = new PedidoService();
+                listaPd = await service.CarregarPedidos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar pedidos para pesquisa: " + ex.Message);
+                return;
+            }
+            // Convertemos a lista de Operadores para uma lista de Objetos
+            var listaParaPesquisa = listaPd.Cast<object>().ToList();
+
+            using (var frm = new frmListaPesquisa(listaParaPesquisa))
+            {
+                frm.Text = "Pesquisa de Pedidos";
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    // converte de volta object para Produto(Cast)
+                    var pdSelecionado = (Pedido)frm.ObjetoSelecionado;
+
+                    // Sincroniza o índice
+                    _listaPedidos = listaPd; // Atualiza a lista local com os dados mais recentes
+                    _indiceAtual = _listaPedidos.FindIndex(x => x.Controle == pdSelecionado.Controle);
+                    preencherCampos();
+                    preencherCamposItens();
+                }
+            }
+        }
+
         private async void btnListaProduto_Click(object sender, EventArgs e)
         {
             var listaPr = new List<Produto>();
@@ -737,11 +933,173 @@ namespace ProjetoC_
                 }
             }
         }
+
+        private async void btnListaCliente_Click(object sender, EventArgs e)
+        {
+            var listaCl = new List<Cliente>();
+            try
+            {
+                var service = new ClienteService();
+                listaCl = await service.CarregarClientes();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar clientes para pesquisa: " + ex.Message);
+                return;
+            }
+            // Convertemos a lista de Operadores para uma lista de Objetos
+            var listaParaPesquisa = listaCl.Cast<object>().ToList();
+
+            using (var frm = new frmListaPesquisa(listaParaPesquisa))
+            {
+                frm.Text = "Pesquisa de Clientes";
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    // converte de volta object para Produto(Cast)
+                    var clSelecionado = (Cliente)frm.ObjetoSelecionado;
+
+                    txtCodCliente.Text = clSelecionado.Codigo.ToString();
+                    txtNomeCliente.Text = clSelecionado.Nome;
+                }
+            }
+        }
+
+        private void btnNovoItem_Click(object sender, EventArgs e)
+        {
+            modoInclusaoItem();
+        }
+
+        private async void btnSalvarItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                validaCamposItem();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro de validação: " + ex.Message);
+                return;
+            }
+
+            try
+            {
+                PedidoItemService pedidoItemService = new PedidoItemService();
+                PedidoItem novoItemPedido = new PedidoItem
+                {
+                    ControlePedido = _listaPedidos[_indiceAtual].Controle,
+                    Item = _listaItensPedido.Count > 0 ? _listaItensPedido.Max(i => i.Item) + 1 : 1, // Incrementa o item com base no maior existente
+                    ProdutoCodigo = int.Parse(txtProdutoCod.Text),
+                    ProdutoDescricao = txtProdutoNome.Text,
+                    Quantidade = decimal.Parse(txtProdutoQtde.Text),
+                    ValorUnitario = decimal.Parse(txtProdutoValorUn.Text),
+                    ValorTotal = decimal.Parse(txtProdutoValorTotal.Text)
+                };
+
+                int idGerado = 0;
+
+                try
+                {
+                    if (_eModoAtualItem == eModoTela.Inclusao)
+                    {
+                        idGerado = await pedidoItemService.InserirItemPedido(novoItemPedido);
+
+                        if (idGerado <= 0)
+                        {
+                            MessageBox.Show("O banco de dados não confirmou a gravação.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        novoItemPedido.Controle = _controlePedidoItemAtual;
+
+                        bool sucesso = await pedidoItemService.AlterarItemPedido(novoItemPedido);
+
+                        if (!sucesso)
+                        {
+                            MessageBox.Show("O banco de dados não confirmou a gravação.");
+                            return;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao gravar item no banco: " + ex.Message);
+                    return;
+                }
+
+                int indiceItem = -1;
+
+                if (_eModoAtualItem == eModoTela.Alteracao)
+                {
+                    indiceItem = _listaItensPedido.FindIndex(i => i.Controle == _controlePedidoItemAtual);
+                    _listaItensPedido[indiceItem] = novoItemPedido;// Atualiza o registro existente
+                }
+                else
+                {
+                    novoItemPedido.Controle = idGerado;
+                    _listaItensPedido.Add(novoItemPedido); // Adiciona o novo registro
+                }
+
+                modoInclusaoItem();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao gravar item: " + ex.Message);
+            }
+        }
+
+        private void btnAlterarItem_Click(object sender, EventArgs e)
+        {
+            modoAlteracaoItem();
+        }
+
+        private async void btnExcluirItem_Click(object sender, EventArgs e)
+        {
+
+            if (dgvItens.CurrentRow == null)
+            {
+                MessageBox.Show("Nenhum item selecionado para exclusão.");
+                return;
+            }
+
+            if (MessageBox.Show("Confirma a exclusão do item?",
+                "Confirmação",
+                MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            var itemSelecionado = (PedidoItem)dgvItens.CurrentRow.DataBoundItem;
+
+            try
+            {
+                int controle = itemSelecionado.Controle; // Pega o controle do item selecionado para exclusão
+                PedidoItemService pedidoItemService = new PedidoItemService();
+                bool sucesso = await pedidoItemService.ExcluirItemPedido(controle);
+
+                if (!sucesso)
+                {
+                    MessageBox.Show("O banco de dados não confirmou a exclusão.");
+                    return;
+                }
+
+                int indiceAtual = _listaItensPedido.FindIndex(i => i.Controle == controle); // Encontra o índice do item excluído
+                _listaItensPedido.RemoveAt(indiceAtual); // Remove da lista local
+                toolProximo_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao excluir pedido do banco: " + ex.Message);
+                return;
+            }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            cancelarItem();
+        }
+        /*FAZER:
+            ajustar tabela dos itens, remover colunas controle
+            testar demais botões para ver se tudo esta funcionando
+        */
     }
-    /*FAZER:
-    botões de crud do item
-    botões de lista de pesquisa do pedido e cliente
-    lincar todos os métodos com os objetos na tela
-    analisar o código do vb para ver se falta alguma coisa
-    */
 }

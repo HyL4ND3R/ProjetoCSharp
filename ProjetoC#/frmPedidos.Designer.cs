@@ -75,7 +75,7 @@
             // 
             txtValorTotal.Enabled = false;
             txtValorTotal.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtValorTotal.Location = new Point(296, 400);
+            txtValorTotal.Location = new Point(296, 464);
             txtValorTotal.Name = "txtValorTotal";
             txtValorTotal.Size = new Size(128, 26);
             txtValorTotal.TabIndex = 32;
@@ -83,7 +83,7 @@
             // lblValorTotal
             // 
             lblValorTotal.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblValorTotal.Location = new Point(208, 400);
+            lblValorTotal.Location = new Point(208, 464);
             lblValorTotal.Name = "lblValorTotal";
             lblValorTotal.Size = new Size(88, 26);
             lblValorTotal.TabIndex = 31;
@@ -96,7 +96,7 @@
             txtNomeCliente.Location = new Point(188, 96);
             txtNomeCliente.Name = "txtNomeCliente";
             txtNomeCliente.Size = new Size(276, 26);
-            txtNomeCliente.TabIndex = 30;
+            txtNomeCliente.TabIndex = 5;
             // 
             // lblCliente
             // 
@@ -122,8 +122,9 @@
             btnListaPedido.Location = new Point(183, 55);
             btnListaPedido.Name = "btnListaPedido";
             btnListaPedido.Size = new Size(30, 28);
-            btnListaPedido.TabIndex = 27;
+            btnListaPedido.TabIndex = 2;
             btnListaPedido.UseVisualStyleBackColor = true;
+            btnListaPedido.Click += btnListaPedido_Click;
             // 
             // txtCodigo
             // 
@@ -131,7 +132,9 @@
             txtCodigo.Location = new Point(112, 56);
             txtCodigo.Name = "txtCodigo";
             txtCodigo.Size = new Size(72, 26);
-            txtCodigo.TabIndex = 26;
+            txtCodigo.TabIndex = 1;
+            txtCodigo.KeyDown += txtCodigo_KeyDown;
+            txtCodigo.KeyPress += txtCodigo_KeyPress;
             // 
             // lblCodigo
             // 
@@ -152,6 +155,7 @@
             toolUltimo.Margin = new Padding(0, 3, 0, 5);
             toolUltimo.Name = "toolUltimo";
             toolUltimo.Size = new Size(36, 40);
+            toolUltimo.Click += toolUltimo_Click;
             // 
             // toolAnterior
             // 
@@ -162,6 +166,7 @@
             toolAnterior.Margin = new Padding(0, 3, 0, 5);
             toolAnterior.Name = "toolAnterior";
             toolAnterior.Size = new Size(36, 40);
+            toolAnterior.Click += toolAnterior_Click;
             // 
             // toolPrimeiro
             // 
@@ -173,6 +178,7 @@
             toolPrimeiro.Name = "toolPrimeiro";
             toolPrimeiro.Padding = new Padding(5, 0, 0, 0);
             toolPrimeiro.Size = new Size(41, 40);
+            toolPrimeiro.Click += toolPrimeiro_Click;
             // 
             // toolDesfazer
             // 
@@ -185,6 +191,7 @@
             toolDesfazer.Padding = new Padding(5, 0, 0, 0);
             toolDesfazer.Size = new Size(41, 40);
             toolDesfazer.Text = "toolStripButton1";
+            toolDesfazer.Click += toolDesfazer_Click;
             // 
             // toolExcluir
             // 
@@ -196,6 +203,7 @@
             toolExcluir.Name = "toolExcluir";
             toolExcluir.Padding = new Padding(5, 0, 0, 0);
             toolExcluir.Size = new Size(41, 40);
+            toolExcluir.Click += toolExcluir_Click;
             // 
             // toolAlterar
             // 
@@ -207,6 +215,7 @@
             toolAlterar.Name = "toolAlterar";
             toolAlterar.Padding = new Padding(5, 0, 0, 0);
             toolAlterar.Size = new Size(41, 40);
+            toolAlterar.Click += toolAlterar_Click;
             // 
             // toolGravar
             // 
@@ -218,6 +227,7 @@
             toolGravar.Name = "toolGravar";
             toolGravar.Padding = new Padding(5, 0, 0, 0);
             toolGravar.Size = new Size(41, 40);
+            toolGravar.Click += toolGravar_Click;
             // 
             // toolNovo
             // 
@@ -229,6 +239,7 @@
             toolNovo.Name = "toolNovo";
             toolNovo.Padding = new Padding(5, 0, 0, 0);
             toolNovo.Size = new Size(41, 40);
+            toolNovo.Click += toolNovo_Click;
             // 
             // toolProximo
             // 
@@ -239,6 +250,7 @@
             toolProximo.Margin = new Padding(0, 3, 0, 5);
             toolProximo.Name = "toolProximo";
             toolProximo.Size = new Size(36, 40);
+            toolProximo.Click += toolProximo_Click;
             // 
             // toolStrip
             // 
@@ -248,7 +260,7 @@
             toolStrip.Margin = new Padding(10, 10, 0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
-            toolStrip.Size = new Size(903, 48);
+            toolStrip.Size = new Size(1118, 48);
             toolStrip.TabIndex = 24;
             // 
             // txtCodCliente
@@ -257,7 +269,9 @@
             txtCodCliente.Location = new Point(112, 96);
             txtCodCliente.Name = "txtCodCliente";
             txtCodCliente.Size = new Size(48, 26);
-            txtCodCliente.TabIndex = 33;
+            txtCodCliente.TabIndex = 3;
+            txtCodCliente.KeyDown += txtCodCliente_KeyDown;
+            txtCodCliente.KeyPress += txtCodCliente_KeyPress;
             // 
             // btnListaCliente
             // 
@@ -265,8 +279,9 @@
             btnListaCliente.Location = new Point(159, 95);
             btnListaCliente.Name = "btnListaCliente";
             btnListaCliente.Size = new Size(30, 28);
-            btnListaCliente.TabIndex = 34;
+            btnListaCliente.TabIndex = 4;
             btnListaCliente.UseVisualStyleBackColor = true;
+            btnListaCliente.Click += btnListaCliente_Click;
             // 
             // dtpDataPedido
             // 
@@ -278,8 +293,9 @@
             dtpDataPedido.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
             dtpDataPedido.Name = "dtpDataPedido";
             dtpDataPedido.Size = new Size(120, 26);
-            dtpDataPedido.TabIndex = 35;
+            dtpDataPedido.TabIndex = 6;
             dtpDataPedido.Value = new DateTime(2026, 2, 13, 23, 25, 2, 0);
+            dtpDataPedido.KeyPress += dtpDataPedido_KeyPress;
             // 
             // lblData
             // 
@@ -298,53 +314,58 @@
             btnNovoItem.Location = new Point(112, 152);
             btnNovoItem.Name = "btnNovoItem";
             btnNovoItem.Size = new Size(77, 30);
-            btnNovoItem.TabIndex = 37;
+            btnNovoItem.TabIndex = 7;
             btnNovoItem.Text = "Novo";
             btnNovoItem.UseVisualStyleBackColor = true;
+            btnNovoItem.Click += btnNovoItem_Click;
             // 
             // btnSalvarItem
             // 
             btnSalvarItem.AutoSize = true;
             btnSalvarItem.Font = new Font("Arial", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnSalvarItem.Location = new Point(187, 152);
+            btnSalvarItem.Location = new Point(188, 152);
             btnSalvarItem.Name = "btnSalvarItem";
             btnSalvarItem.Size = new Size(77, 30);
-            btnSalvarItem.TabIndex = 38;
+            btnSalvarItem.TabIndex = 8;
             btnSalvarItem.Text = "Salvar";
             btnSalvarItem.UseVisualStyleBackColor = true;
+            btnSalvarItem.Click += btnSalvarItem_Click;
             // 
             // btnAlterarItem
             // 
             btnAlterarItem.AutoSize = true;
             btnAlterarItem.Font = new Font("Arial", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnAlterarItem.Location = new Point(262, 152);
+            btnAlterarItem.Location = new Point(264, 152);
             btnAlterarItem.Name = "btnAlterarItem";
             btnAlterarItem.Size = new Size(77, 30);
-            btnAlterarItem.TabIndex = 39;
+            btnAlterarItem.TabIndex = 9;
             btnAlterarItem.Text = "Alterar";
             btnAlterarItem.UseVisualStyleBackColor = true;
+            btnAlterarItem.Click += btnAlterarItem_Click;
             // 
             // btnExcluirItem
             // 
             btnExcluirItem.AutoSize = true;
             btnExcluirItem.Font = new Font("Arial", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnExcluirItem.Location = new Point(337, 152);
+            btnExcluirItem.Location = new Point(340, 152);
             btnExcluirItem.Name = "btnExcluirItem";
             btnExcluirItem.Size = new Size(77, 30);
-            btnExcluirItem.TabIndex = 40;
+            btnExcluirItem.TabIndex = 10;
             btnExcluirItem.Text = "Excluir";
             btnExcluirItem.UseVisualStyleBackColor = true;
+            btnExcluirItem.Click += btnExcluirItem_Click;
             // 
             // btnCancelar
             // 
             btnCancelar.AutoSize = true;
             btnCancelar.Font = new Font("Arial", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnCancelar.Location = new Point(412, 152);
+            btnCancelar.Location = new Point(416, 152);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(77, 30);
-            btnCancelar.TabIndex = 41;
+            btnCancelar.TabIndex = 11;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // dgvItens
             // 
@@ -352,8 +373,9 @@
             dgvItens.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvItens.Location = new Point(208, 216);
             dgvItens.Name = "dgvItens";
-            dgvItens.Size = new Size(480, 176);
+            dgvItens.Size = new Size(664, 240);
             dgvItens.TabIndex = 42;
+            dgvItens.SelectionChanged += dgvItens_SelectionChanged;
             // 
             // txtProdutoCod
             // 
@@ -361,24 +383,27 @@
             txtProdutoCod.Location = new Point(112, 184);
             txtProdutoCod.Name = "txtProdutoCod";
             txtProdutoCod.Size = new Size(72, 26);
-            txtProdutoCod.TabIndex = 43;
+            txtProdutoCod.TabIndex = 12;
+            txtProdutoCod.KeyDown += txtProdutoCod_KeyDown;
+            txtProdutoCod.KeyPress += txtProdutoCod_KeyPress;
             // 
             // btnListaProduto
             // 
             btnListaProduto.Image = (Image)resources.GetObject("btnListaProduto.Image");
-            btnListaProduto.Location = new Point(183, 183);
+            btnListaProduto.Location = new Point(184, 183);
             btnListaProduto.Name = "btnListaProduto";
             btnListaProduto.Size = new Size(30, 28);
-            btnListaProduto.TabIndex = 44;
+            btnListaProduto.TabIndex = 13;
             btnListaProduto.UseVisualStyleBackColor = true;
             // 
             // txtProdutoNome
             // 
             txtProdutoNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtProdutoNome.Location = new Point(212, 184);
+            txtProdutoNome.Location = new Point(214, 184);
             txtProdutoNome.Name = "txtProdutoNome";
             txtProdutoNome.Size = new Size(276, 26);
-            txtProdutoNome.TabIndex = 45;
+            txtProdutoNome.TabIndex = 14;
+            txtProdutoNome.KeyPress += txtProdutoDescricao_KeyPress;
             // 
             // lblProduto
             // 
@@ -396,7 +421,8 @@
             txtProdutoQtde.Location = new Point(112, 216);
             txtProdutoQtde.Name = "txtProdutoQtde";
             txtProdutoQtde.Size = new Size(88, 26);
-            txtProdutoQtde.TabIndex = 47;
+            txtProdutoQtde.TabIndex = 15;
+            txtProdutoQtde.KeyPress += txtProdutoQtde_KeyPress;
             // 
             // txtProdutoValorUn
             // 
@@ -404,7 +430,8 @@
             txtProdutoValorUn.Location = new Point(112, 248);
             txtProdutoValorUn.Name = "txtProdutoValorUn";
             txtProdutoValorUn.Size = new Size(88, 26);
-            txtProdutoValorUn.TabIndex = 48;
+            txtProdutoValorUn.TabIndex = 16;
+            txtProdutoValorUn.KeyPress += txtProdutoValorUn_KeyPress;
             // 
             // txtProdutoValorTotal
             // 
@@ -412,7 +439,8 @@
             txtProdutoValorTotal.Location = new Point(112, 280);
             txtProdutoValorTotal.Name = "txtProdutoValorTotal";
             txtProdutoValorTotal.Size = new Size(88, 26);
-            txtProdutoValorTotal.TabIndex = 49;
+            txtProdutoValorTotal.TabIndex = 17;
+            txtProdutoValorTotal.KeyPress += txtProdutoValorTotal_KeyPress;
             // 
             // lblQuantidade
             // 
@@ -448,7 +476,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(903, 503);
+            ClientSize = new Size(1118, 560);
             Controls.Add(lblTotalItem);
             Controls.Add(lblValorUn);
             Controls.Add(lblQuantidade);
@@ -480,6 +508,7 @@
             Controls.Add(toolStrip);
             Name = "frmPedidos";
             Text = "frmPedido";
+            Load += frmProdutos_Load;
             toolStrip.ResumeLayout(false);
             toolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvItens).EndInit();

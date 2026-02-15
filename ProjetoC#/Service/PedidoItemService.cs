@@ -12,7 +12,7 @@ namespace ProjetoC_.Service
 
         public async Task<List<PedidoItem>> CarregarItensPedido(int ControlePedido)
         {
-            String query = "Select Controle, ControlePedido, Item, ProdutoCodigo, Descricao, Quantidade, ValorUn, ValorTotal " +
+            String query = "Select Controle, ControlePedido, Item, ProdutoCodigo, Descricao ProdutoDescricao, Quantidade, ValorUn ValorUnitario, ValorTotal " +
             "From PedidoItem " +
             "Where ControlePedido = @ControlePedido " +
             "Order By Item";
@@ -24,6 +24,17 @@ namespace ProjetoC_.Service
             List<PedidoItem> resultado = await _dbService.ExecutarConsultaAsync<PedidoItem>(query, parametros);
 
             return resultado;
+        }
+
+        public async Task<int> BuscarProximoCodItemPedido(int ControlePedido)
+        {
+            String query = "Select IsNull(Max(Item), 0) + 1 From PedidoItem Where ControlePedido = @ControlePedido";
+            var parametros = new Dictionary<string, object>()
+            {
+                {"@ControlePedido",ControlePedido}
+            };
+            List<int> resultado = await _dbService.ExecutarConsultaAsync<int>(query, parametros);
+            return resultado[0];
         }
 
         public async Task<int> InserirItemPedido(PedidoItem pedidoItem)

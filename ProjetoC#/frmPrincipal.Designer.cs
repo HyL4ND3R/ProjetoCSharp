@@ -72,6 +72,7 @@
             menuPedidos.Name = "menuPedidos";
             menuPedidos.Size = new Size(61, 20);
             menuPedidos.Text = "Pedidos";
+            menuPedidos.Click += menuPedidos_Click;
             // 
             // menuRelatorioPedidos
             // 
