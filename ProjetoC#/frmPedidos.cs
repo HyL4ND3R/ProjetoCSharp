@@ -250,6 +250,9 @@ namespace ProjetoC_
         }
         private void ModoInclusaoItem()
         {
+            dgvItens.Enabled = false;
+            dgvItens.ClearSelection();
+
             toolNovo.Enabled = false;
             toolGravar.Enabled = false;
             toolAlterar.Enabled = false;
@@ -288,8 +291,6 @@ namespace ProjetoC_
             txtProdutoValorTotal.Enabled = true;
             txtProdutoValorTotal.Text = "";
 
-            dgvItens.Enabled = true;
-
             txtProdutoCod.Focus();
 
             _eModoAtualPedido = eModoTela.Bloqueado;
@@ -297,6 +298,9 @@ namespace ProjetoC_
         }
         private void ModoAlteracaoItem()
         {
+            dgvItens.Enabled = false;
+            dgvItens.ClearSelection();
+
             toolNovo.Enabled = false;
             toolGravar.Enabled = false;
             toolAlterar.Enabled = false;
@@ -330,8 +334,6 @@ namespace ProjetoC_
             txtProdutoValorUn.Enabled = true;
             txtProdutoValorTotal.Enabled = true;
 
-            dgvItens.Enabled = true;
-
             txtProdutoCod.Focus();
 
             _eModoAtualPedido = eModoTela.Bloqueado;
@@ -339,6 +341,12 @@ namespace ProjetoC_
         }
         private void CancelarItem()
         {
+            //DataGrid
+            dgvItens.Enabled = true;
+            dgvItens.ClearSelection();
+            if (dgvItens.Rows.Count > 0)
+                dgvItens.Rows[0].Selected = true;
+
             // Tools
             toolNovo.Enabled = true;
             toolGravar.Enabled = false;
@@ -372,13 +380,11 @@ namespace ProjetoC_
             txtProdutoQtde.Enabled = false;
             txtProdutoValorUn.Enabled = false;
             txtProdutoValorTotal.Enabled = false;
-
-            dgvItens.Enabled = true;
-
-            preencherCamposItens();
-
+            
             _eModoAtualPedido = eModoTela.Consulta;
             _eModoAtualItem = eModoTela.Consulta;
+            
+            preencherCamposItens();
         }
 
         private void toolNovo_Click(object sender, EventArgs e)
@@ -672,6 +678,7 @@ namespace ProjetoC_
                 {
                     _indiceAtual = indiceEncontrado;
                     preencherCampos();
+                    preencherItensPedido();
                 }
                 else
                 {
@@ -1017,6 +1024,8 @@ namespace ProjetoC_
             try
             {
                 PedidoItemService pedidoItemService = new PedidoItemService();
+                PedidoService pedidoService = new PedidoService();
+
                 PedidoItem novoItemPedido = new PedidoItem
                 {
                     ControlePedido = _listaPedidos[_indiceAtual].Controle,
@@ -1029,6 +1038,7 @@ namespace ProjetoC_
                 };
 
                 int idGerado = 0;
+                bool recalculoSucesso;
 
                 try
                 {
@@ -1053,6 +1063,13 @@ namespace ProjetoC_
                             MessageBox.Show("O banco de dados não confirmou a gravação.");
                             return;
                         }
+                    }
+
+                    recalculoSucesso = await pedidoService.RecalcularTotaisPedido(_listaPedidos[_indiceAtual].Controle);
+
+                    if (!recalculoSucesso)
+                    {
+                        MessageBox.Show("O banco de dados não confirmou o recálculo dos totais do pedido.");
                     }
                 }
                 catch (Exception ex)
@@ -1082,8 +1099,9 @@ namespace ProjetoC_
                     novoItemPedido.Controle = idGerado;
                     _listaItensPedido.Add(novoItemPedido); // Adiciona o novo registro
                     dgvItens.Refresh(); // Atualiza a grade para refletir as mudanças
-                    dgvItens.Rows[_listaItensPedido.Count - 1].Selected = true; // Seleciona o novo item adicionado na grade
                 }
+
+                if (recalculoSucesso) RecalcularTotaisPedidoLocal();
 
                 ModoInclusaoItem();
             }
@@ -1116,14 +1134,31 @@ namespace ProjetoC_
 
             try
             {
-                int controle = itemSelecionado.Controle; // Pega o controle do item selecionado para exclusão
+
                 PedidoItemService pedidoItemService = new PedidoItemService();
+                PedidoService pedidoService = new PedidoService();
+
+                int controle = itemSelecionado.Controle; // Pega o controle do item selecionado para exclusão
                 bool sucesso = await pedidoItemService.ExcluirItemPedido(controle);
 
                 if (!sucesso)
                 {
                     MessageBox.Show("O banco de dados não confirmou a exclusão.");
                     return;
+                }
+
+                bool recalculoSucesso = await pedidoItemService.RecalcularItemPedido(_listaPedidos[_indiceAtual].Controle);
+
+                if (!recalculoSucesso)
+                {
+                    MessageBox.Show("O banco de dados não confirmou o recálculo dos itens do pedido.");
+                }
+
+                recalculoSucesso = await pedidoService.RecalcularTotaisPedido(_listaPedidos[_indiceAtual].Controle);
+
+                if (!recalculoSucesso)
+                {
+                    MessageBox.Show("O banco de dados não confirmou o recálculo dos totais do pedido.");
                 }
 
                 var item = _listaItensPedido.FirstOrDefault(i => i.Controle == controle); // Encontra o índice do item excluído
@@ -1133,7 +1168,11 @@ namespace ProjetoC_
                     indiceItem = _listaItensPedido.IndexOf(item);
                     _listaItensPedido.RemoveAt(indiceItem); // Remove da lista local
                 }
+
+                if (recalculoSucesso) RecalcularTotaisPedidoLocal();
+
                 dgvItens.Refresh();
+
                 if (dgvItens.Rows.Count > 0)
                 {
                     dgvItens.Rows[0].Selected = true; // Seleciona o primeiro item da grade após exclusão
@@ -1237,10 +1276,11 @@ namespace ProjetoC_
             });
         }
 
-        /*FAZER:
-            testar demais botões para ver se tudo esta funcionando
-            fazer chamar as SP de calculo total pedido na inserção/alteração/exclusão do item
-            fazer chamar a SP de recálculo do campo ITEM do pedidoitem na exclusão do item
-        */
+        private void RecalcularTotaisPedidoLocal()
+        {
+            decimal totalGeral = _listaItensPedido.Sum(item => item.ValorTotal);
+            _listaPedidos[_indiceAtual].ValorTotal = totalGeral;
+            txtValorTotal.Text = totalGeral.ToString("F2");
+        }
     }
 }

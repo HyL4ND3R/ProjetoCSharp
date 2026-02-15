@@ -93,5 +93,18 @@ namespace ProjetoC_.Service
 
             return resultado != null && resultado.LinhasAfetadas > 0;
         }
+
+        public async Task<bool> RecalcularItemPedido(int controle)
+        {
+            string query = "EXEC sp_RecalcularItemPedido @Controle";
+
+            var parametros = new Dictionary<string, object>
+            {
+                { "@Controle", controle }
+            };
+            var resultado = await _dbService.ExecutarComandoAsync<RespostaComando>(query, parametros);
+
+            return resultado != null && resultado.LinhasAfetadas > 0;
+        }
     }
 }

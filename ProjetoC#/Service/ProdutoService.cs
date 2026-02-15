@@ -17,6 +17,8 @@ namespace ProjetoC_.Service
 
             List<Produto> resultado = await _dbService.ExecutarConsultaAsync<Produto>(query, parametros);
 
+            if (resultado.Count == 0) return null;
+
             return resultado;
         }
 
@@ -30,6 +32,8 @@ namespace ProjetoC_.Service
             };
 
             List<Produto> resultado = await _dbService.ExecutarConsultaAsync<Produto>(query, parametros);
+
+            if (resultado.Count == 0) return null;
 
             return resultado[0];
         }

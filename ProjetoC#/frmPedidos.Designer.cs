@@ -398,6 +398,7 @@
             btnListaProduto.Size = new Size(30, 28);
             btnListaProduto.TabIndex = 13;
             btnListaProduto.UseVisualStyleBackColor = true;
+            btnListaProduto.Click += btnListaProduto_Click;
             // 
             // txtProdutoNome
             // 
