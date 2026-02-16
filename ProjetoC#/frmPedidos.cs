@@ -380,10 +380,10 @@ namespace ProjetoC_
             txtProdutoQtde.Enabled = false;
             txtProdutoValorUn.Enabled = false;
             txtProdutoValorTotal.Enabled = false;
-            
+
             _eModoAtualPedido = eModoTela.Consulta;
             _eModoAtualItem = eModoTela.Consulta;
-            
+
             preencherCamposItens();
         }
 
@@ -1036,13 +1036,21 @@ namespace ProjetoC_
                 PedidoItem novoItemPedido = new PedidoItem
                 {
                     ControlePedido = _listaPedidos[_indiceAtual].Controle,
-                    Item = _listaItensPedido.Count > 0 ? _listaItensPedido.Max(i => i.Item) + 1 : 1, // Incrementa o item com base no maior existente
                     ProdutoCodigo = int.Parse(txtProdutoCod.Text),
                     ProdutoDescricao = txtProdutoNome.Text,
                     Quantidade = decimal.Parse(txtProdutoQtde.Text),
                     ValorUnitario = decimal.Parse(txtProdutoValorUn.Text),
                     ValorTotal = decimal.Parse(txtProdutoValorTotal.Text)
                 };
+
+                if (_eModoAtualItem == eModoTela.Alteracao)
+                {
+                    novoItemPedido.Item = _listaItensPedido.FirstOrDefault(i => i.Controle == _controlePedidoItemAtual)?.Item ?? 0;
+                }
+                else
+                {
+                    novoItemPedido.Item = _listaItensPedido.Count > 0 ? _listaItensPedido.Max(i => i.Item) + 1 : 1; // Incrementa o item com base no maior existente
+                }
 
                 int idGerado = 0;
                 bool recalculoSucesso;
@@ -1090,15 +1098,9 @@ namespace ProjetoC_
                 if (_eModoAtualItem == eModoTela.Alteracao)
                 {
                     var item = _listaItensPedido.FirstOrDefault(i => i.Controle == _controlePedidoItemAtual);
-
-                    if (item != null)
-                    {
-                        int indiceAtual = _listaItensPedido.IndexOf(item);
-                        _listaItensPedido[indiceAtual] = novoItemPedido;
-                    }
-
+                    indiceItem = _listaItensPedido.IndexOf(item);
+                    _listaItensPedido[indiceItem] = novoItemPedido;
                     dgvItens.Refresh(); // Atualiza a grade para refletir as mudanças
-                    dgvItens.Rows[indiceItem].Selected = true; // Seleciona o item alterado na grade
                     preencherCamposItens(); // Atualiza os campos com o item selecionado
                 }
                 else
@@ -1110,7 +1112,14 @@ namespace ProjetoC_
 
                 if (recalculoSucesso) RecalcularTotaisPedidoLocal();
 
-                ModoInclusaoItem();
+                if (_eModoAtualItem == eModoTela.Inclusao)
+                {
+                    ModoInclusaoItem();
+                }
+                else
+                {
+                    CancelarItem();
+                }
             }
             catch (Exception ex)
             {
@@ -1168,7 +1177,7 @@ namespace ProjetoC_
                     MessageBox.Show("O banco de dados não confirmou o recálculo dos totais do pedido.");
                 }
 
-                if (recalculoSucesso) RecalcularItemPedidoLocal(); 
+                if (recalculoSucesso) RecalcularItemPedidoLocal();
 
                 var item = _listaItensPedido.FirstOrDefault(i => i.Controle == controle); // Encontra o índice do item excluído
                 int indiceItem = -1;
@@ -1299,7 +1308,6 @@ namespace ProjetoC_
                 _listaItensPedido[i].Item = i + 1;
             }
         }
-        //Erro ao alterar um item
         //não fazer update no ITEM ao alterar um ITEM
     }
 }
