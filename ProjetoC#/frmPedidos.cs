@@ -1299,5 +1299,7 @@ namespace ProjetoC_
                 _listaItensPedido[i].Item = i + 1;
             }
         }
+        //Erro ao alterar um item
+        //não fazer update no ITEM ao alterar um ITEM
     }
 }
