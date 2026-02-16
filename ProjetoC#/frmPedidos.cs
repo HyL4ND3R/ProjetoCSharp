@@ -1168,6 +1168,8 @@ namespace ProjetoC_
                     MessageBox.Show("O banco de dados não confirmou o recálculo dos totais do pedido.");
                 }
 
+                if (recalculoSucesso) RecalcularItemPedidoLocal(); 
+
                 var item = _listaItensPedido.FirstOrDefault(i => i.Controle == controle); // Encontra o índice do item excluído
                 int indiceItem = -1;
                 if (item != null)
@@ -1288,6 +1290,14 @@ namespace ProjetoC_
             decimal totalGeral = _listaItensPedido.Sum(item => item.ValorTotal);
             _listaPedidos[_indiceAtual].ValorTotal = totalGeral;
             txtValorTotal.Text = totalGeral.ToString("F2");
+        }
+
+        private void RecalcularItemPedidoLocal()
+        {
+            for (int i = 0; i < _listaItensPedido.Count; i++)
+            {
+                _listaItensPedido[i].Item = i + 1;
+            }
         }
     }
 }

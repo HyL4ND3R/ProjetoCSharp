@@ -15,7 +15,7 @@ namespace ProjetoC_.Service
             String query = "Select Controle, ControlePedido, Item, ProdutoCodigo, Descricao ProdutoDescricao, Quantidade, ValorUn ValorUnitario, ValorTotal " +
             "From PedidoItem " +
             "Where ControlePedido = @ControlePedido " +
-            "Order By Item";
+            "Order By Item Asc";
             var parametros = new Dictionary<string, object>()
             {
                 {"@ControlePedido",ControlePedido}
