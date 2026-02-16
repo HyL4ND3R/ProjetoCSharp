@@ -613,6 +613,12 @@ namespace ProjetoC_
             if (_eModoAtualItem == eModoTela.Alteracao
                 || _eModoAtualItem == eModoTela.Inclusao) return;
 
+            if (_listaItensPedido.Count == 0)
+            {
+                limparCamposItens();
+                return;
+            }
+
             if ((dgvItens.CurrentRow == null)) return;
 
             var itemSelecionado = (PedidoItem)dgvItens.CurrentRow.DataBoundItem;
@@ -640,6 +646,7 @@ namespace ProjetoC_
 
         private void limparCamposItens()
         {
+            _controlePedidoItemAtual = 0;
             txtProdutoCod.Text = "";
             txtProdutoNome.Text = "";
             txtProdutoQtde.Text = "";
@@ -938,7 +945,7 @@ namespace ProjetoC_
                     _listaPedidos = listaPd; // Atualiza a lista local com os dados mais recentes
                     _indiceAtual = _listaPedidos.FindIndex(x => x.Controle == pdSelecionado.Controle);
                     preencherCampos();
-                    preencherCamposItens();
+                    preencherItensPedido();
                 }
             }
         }
