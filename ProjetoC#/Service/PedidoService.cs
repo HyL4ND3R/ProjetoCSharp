@@ -15,7 +15,6 @@ namespace ProjetoC_.Service
                 "Pedido.Codigo Codigo, " +
                 "Cliente.Codigo ClienteCodigo, " +
                 "Cliente.Nome ClienteNome, " +
-                //"FORMAT(Pedido.data,'dd/MM/yyyy') DataPedido, " +
                 "Pedido.data DataPedido, " +
                 "ISNULL(Pedido.QtdeTotal, 0) QtdeTotal, " +
                 "ISNULL(Pedido.ValorTotal, 0) ValorTotal " +

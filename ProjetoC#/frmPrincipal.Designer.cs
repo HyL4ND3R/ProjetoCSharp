@@ -79,6 +79,7 @@
             menuRelatorioPedidos.Name = "menuRelatorioPedidos";
             menuRelatorioPedidos.Size = new Size(111, 20);
             menuRelatorioPedidos.Text = "Relatório Pedidos";
+            menuRelatorioPedidos.Click += menuRelatorioPedidos_Click;
             // 
             // frmPrincipal
             // 

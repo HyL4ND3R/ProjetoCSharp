@@ -56,5 +56,10 @@ namespace ProjetoC_
         {
             AbrirFormFilho<frmPedidos>();
         }
+
+        private void menuRelatorioPedidos_Click(object sender, EventArgs e)
+        {
+            AbrirFormFilho<frmRelPedidos>();
+        }
     }
 }

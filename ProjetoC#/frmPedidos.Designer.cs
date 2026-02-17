@@ -47,6 +47,7 @@
             toolNovo = new ToolStripButton();
             toolProximo = new ToolStripButton();
             toolStrip = new ToolStrip();
+            toolVisualizar = new ToolStripButton();
             txtCodCliente = new TextBox();
             btnListaCliente = new Button();
             dtpDataPedido = new DateTimePicker();
@@ -255,13 +256,24 @@
             // toolStrip
             // 
             toolStrip.AutoSize = false;
-            toolStrip.Items.AddRange(new ToolStripItem[] { toolNovo, toolGravar, toolAlterar, toolExcluir, toolDesfazer, toolPrimeiro, toolAnterior, toolProximo, toolUltimo });
+            toolStrip.Items.AddRange(new ToolStripItem[] { toolNovo, toolGravar, toolAlterar, toolExcluir, toolDesfazer, toolVisualizar, toolPrimeiro, toolAnterior, toolProximo, toolUltimo });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Margin = new Padding(10, 10, 0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
             toolStrip.Size = new Size(1118, 48);
             toolStrip.TabIndex = 24;
+            // 
+            // toolVisualizar
+            // 
+            toolVisualizar.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolVisualizar.Image = Properties.Resources._32;
+            toolVisualizar.ImageScaling = ToolStripItemImageScaling.None;
+            toolVisualizar.ImageTransparentColor = Color.Magenta;
+            toolVisualizar.Margin = new Padding(10, 3, 0, 5);
+            toolVisualizar.Name = "toolVisualizar";
+            toolVisualizar.Size = new Size(36, 40);
+            toolVisualizar.Click += toolVisualizar_Click;
             // 
             // txtCodCliente
             // 
@@ -563,5 +575,6 @@
         private Label lblQuantidade;
         private Label lblValorUn;
         private Label lblTotalItem;
+        private ToolStripButton toolVisualizar;
     }
 }

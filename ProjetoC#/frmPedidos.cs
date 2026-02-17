@@ -566,6 +566,16 @@ namespace ProjetoC_
             }
         }
 
+        private void toolVisualizar_Click(object sender, EventArgs e)
+        {
+            if (_listaPedidos[_indiceAtual] == null) return;
+
+            if (_listaItensPedido.Count == 0) _listaItensPedido = new BindingList<PedidoItem>();
+
+            Relatorios rel = new Relatorios();
+            rel.GerarVisualizacaoPedido(_listaPedidos[_indiceAtual], _listaItensPedido);
+        }
+
         private async void preencherCampos()
         {
             if (_listaPedidos.Count > 0 && _indiceAtual >= 0 && _indiceAtual < _listaPedidos.Count)
@@ -1308,6 +1318,5 @@ namespace ProjetoC_
                 _listaItensPedido[i].Item = i + 1;
             }
         }
-        //não fazer update no ITEM ao alterar um ITEM
     }
 }
