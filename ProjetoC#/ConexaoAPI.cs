@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Http.Json; // .NET 5+
 using System.Text.Json;
+using iText.Commons.Actions;
+using Microsoft.Identity.Client;
+using System.Configuration;
 
 namespace ProjetoC_
 {
-    internal class ConexaoAPI
+    public class ConexaoAPI
     {
         // Método Exemplo
         public async Task CarregarDados(String query = "")
@@ -15,7 +18,7 @@ namespace ProjetoC_
 
             using (HttpClient client = new HttpClient())
             {
-                string url = "http://localhost/api/database/executar";
+                string url = Global.UrlApi;
 
                 try
                 {
@@ -37,6 +40,19 @@ namespace ProjetoC_
                 {
                     MessageBox.Show("Erro de conexão: " + ex.Message);
                 }
+            }
+        }
+    }
+
+    public static class Global
+    {
+        public static string UrlApi
+        {
+            get
+            {
+                string url = ConfigurationManager.AppSettings["UrlApi"];
+                url += "/api/database/executar";
+                return string.IsNullOrEmpty(url) ? "http://localhost:5288/api/database/executar" : url;
             }
         }
     }

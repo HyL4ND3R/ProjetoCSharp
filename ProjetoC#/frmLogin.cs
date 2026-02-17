@@ -1,13 +1,10 @@
-using Microsoft.VisualBasic;
+using iText.Kernel.Colors;
 using ProjetoC_.Models;
 using ProjetoC_.Service;
 using ProjetoC_.Utils;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json; // Para PostAsJsonAsync
-using System.Text.Json;     // Para lidar com o JSON
-using System.Threading.Tasks;
-using System.Windows.Forms; // Se for WPF, remova isso
+using System.Configuration;
+using System.Security.Policy;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace ProjetoC_
 {
@@ -16,7 +13,7 @@ namespace ProjetoC_
 
         // Instancia o serviço
         private readonly DatabaseService _dbService;
-        public static Cliente operadorLogado { get; private set; } = null;
+        public static Operador? operadorLogado { get; private set; }
 
         public frmLogin()
         {
@@ -39,6 +36,13 @@ namespace ProjetoC_
                 return;
             }
 
+            // Reler o arquivo .config agora mesmo para garantir o valor atualizado
+            ConfigurationManager.RefreshSection("appSettings");
+            string urlAtualizada = ConfigurationManager.AppSettings["UrlApi"]; 
+
+            // Se você usa uma classe de serviço, atualize a URL dela aqui
+            _dbService._urlApi = string.IsNullOrEmpty(urlAtualizada) ? "http://localhost:5288/api/database/executar" 
+                : urlAtualizada + "/api/database/executar";
             try
             {
                 // 2. Prepara os dados (Apenas SQL e Parametros)
@@ -103,6 +107,29 @@ namespace ProjetoC_
             {
                 btnEntrar.Focus(); // Move o foco para a senha
                 e.Handled = true; // Evita o som de "beep"
+            }
+        }
+
+        private void lblConfigBanco_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                using (var frm = new frmConfigServidor())
+                {
+                    // Ao abrir a tela, já mostra o que está configurado atualmente
+
+                    frm.txtUrl.Text = ConfigurationManager.AppSettings["UrlApi"];
+                    frm.ShowDialog();
+                }
+            }
+        }
+
+        private void frmLogin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.Handled = true;
+                this.Close();
             }
         }
     }

@@ -11,12 +11,11 @@ namespace ProjetoC_.Service
     {
         // 1. Instância estática do HttpClient (Melhor prática para performance)
         private static readonly HttpClient _client = new HttpClient();
-        private readonly string _urlApi;
+        public string _urlApi;
 
         public DatabaseService()
         {
-            // Transformar em um arquivo de configuração depois
-            _urlApi = "http://localhost:5288/api/database/executar";
+            _urlApi = Global.UrlApi;
         }
 
         // 2. Método Genérico List<T>: Passar o objeto pelo <t>, usado para Consultas.

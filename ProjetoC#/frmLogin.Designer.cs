@@ -34,6 +34,7 @@
             txtSenha = new TextBox();
             lblLogin = new Label();
             lblSenha = new Label();
+            lblConfigBanco = new Label();
             SuspendLayout();
             // 
             // btnEntrar
@@ -95,11 +96,20 @@
             lblSenha.Text = "Senha:";
             lblSenha.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // lblConfigBanco
+            // 
+            lblConfigBanco.Location = new Point(80, 22);
+            lblConfigBanco.Name = "lblConfigBanco";
+            lblConfigBanco.Size = new Size(32, 32);
+            lblConfigBanco.TabIndex = 6;
+            lblConfigBanco.MouseClick += lblConfigBanco_MouseClick;
+            // 
             // frmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(321, 287);
+            Controls.Add(lblConfigBanco);
             Controls.Add(lblSenha);
             Controls.Add(lblLogin);
             Controls.Add(txtSenha);
@@ -109,6 +119,7 @@
             Name = "frmLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
+            KeyDown += frmLogin_KeyDown;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -121,5 +132,6 @@
         private TextBox txtSenha;
         private Label lblLogin;
         private Label lblSenha;
+        private Label lblConfigBanco;
     }
 }
