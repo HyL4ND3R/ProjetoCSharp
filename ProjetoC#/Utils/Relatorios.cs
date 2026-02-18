@@ -113,7 +113,7 @@ namespace ProjetoC_.Utils
 
                         tabMestre.AddCell(new Cell().Add(new Paragraph($"Ped: {infoPedido.PedidoCodigo}").SetFont(fBold)));
                         tabMestre.AddCell(new Cell().Add(new Paragraph($"Cliente: {infoPedido.ClienteNome}").SetFont(fBold)));
-                        tabMestre.AddCell(new Cell().Add(new Paragraph($"Itens: {grupo.Sum(x => x.QuantidadeTotalPedido)}").SetFont(fBold)));
+                        tabMestre.AddCell(new Cell().Add(new Paragraph($"Itens: {grupo.Sum(x => x.QuantidadeTotalPedido):N2}").SetFont(fBold)));
                         tabMestre.AddCell(new Cell().Add(new Paragraph($"Total: {infoPedido.ValorTotalPedido:C2}").SetFont(fBold)));
                         doc.Add(tabMestre);
 
@@ -129,7 +129,7 @@ namespace ProjetoC_.Utils
                         {
                             tabDetalhe.AddCell(new Cell().Add(new Paragraph(item.ProdutoCodigo.ToString()).SetFontSize(8)));
                             tabDetalhe.AddCell(new Cell().Add(new Paragraph(item.ProdutoDescricao).SetFontSize(8)));
-                            tabDetalhe.AddCell(new Cell().Add(new Paragraph(item.ProdutoQuantidade.ToString()).SetFontSize(8)));
+                            tabDetalhe.AddCell(new Cell().Add(new Paragraph(item.ProdutoQuantidade.ToString("N2")).SetFontSize(8)));
                             tabDetalhe.AddCell(new Cell().Add(new Paragraph(item.ProdutoValorUn.ToString("N2")).SetFontSize(8)));
                             tabDetalhe.AddCell(new Cell().Add(new Paragraph(item.ProdutoValorTotal.ToString("N2")).SetFontSize(8)));
                         }

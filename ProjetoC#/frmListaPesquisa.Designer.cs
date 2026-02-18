@@ -74,6 +74,7 @@
             txtFiltro.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             txtFiltro.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtFiltro.Location = new Point(8, 407);
+            txtFiltro.MaxLength = 500;
             txtFiltro.Name = "txtFiltro";
             txtFiltro.Size = new Size(232, 26);
             txtFiltro.TabIndex = 1;

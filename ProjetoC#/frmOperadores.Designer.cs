@@ -193,6 +193,7 @@
             // 
             txtCodigo.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtCodigo.Location = new Point(112, 56);
+            txtCodigo.MaxLength = 10;
             txtCodigo.Name = "txtCodigo";
             txtCodigo.Size = new Size(72, 26);
             txtCodigo.TabIndex = 8;
@@ -213,6 +214,7 @@
             // 
             txtNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNome.Location = new Point(112, 96);
+            txtNome.MaxLength = 200;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(168, 26);
             txtNome.TabIndex = 12;
@@ -222,6 +224,7 @@
             // 
             txtSenha.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSenha.Location = new Point(112, 136);
+            txtSenha.MaxLength = 200;
             txtSenha.Name = "txtSenha";
             txtSenha.Size = new Size(168, 26);
             txtSenha.TabIndex = 13;

@@ -238,9 +238,14 @@ namespace ProjetoC_
                 validaCampos();
 
                 string query = @"SELECT p.Codigo PedidoCodigo, p.ClienteCodigo ClienteCodigo, c.Nome ClienteNome, 
-                                    p.Data DataPedido, p.QtdeTotal QuantidadeTotalPedido, p.ValorTotal ValorTotalPedido, 
-                                    i.ProdutoCodigo ProdutoCodigo, i.Descricao ProdutoDescricao, 
-                                    i.Quantidade ProdutoQuantidade, i.ValorUn ProdutoValorUn, i.ValorTotal ProdutoValorTotal 
+                                    isnull(p.Data, GETDATE()) DataPedido, 
+									isnull(p.QtdeTotal, 0) QuantidadeTotalPedido, 
+									isnull(p.ValorTotal, 0) ValorTotalPedido, 
+                                    isnull(i.ProdutoCodigo, 0) ProdutoCodigo, 
+									isnull(i.Descricao, '') ProdutoDescricao, 
+                                    isnull(i.Quantidade, 0) ProdutoQuantidade, 
+									isnull(i.ValorUn, 0) ProdutoValorUn, 
+									isnull(i.ValorTotal, 0) ProdutoValorTotal 
                                  FROM Pedido p
                                  LEFT JOIN PedidoItem i ON p.Controle = i.ControlePedido 
 				                 INNER JOIN Cliente c on P.ClienteCodigo = c.Codigo 

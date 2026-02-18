@@ -106,6 +106,7 @@
             // 
             txtCodCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtCodCliente.Location = new Point(136, 104);
+            txtCodCliente.MaxLength = 10;
             txtCodCliente.Name = "txtCodCliente";
             txtCodCliente.Size = new Size(72, 26);
             txtCodCliente.TabIndex = 3;
@@ -116,6 +117,7 @@
             // 
             txtNomeCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNomeCliente.Location = new Point(236, 104);
+            txtNomeCliente.MaxLength = 200;
             txtNomeCliente.Name = "txtNomeCliente";
             txtNomeCliente.Size = new Size(192, 26);
             txtNomeCliente.TabIndex = 97;
@@ -124,6 +126,7 @@
             // 
             txtProdutoNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoNome.Location = new Point(236, 144);
+            txtProdutoNome.MaxLength = 200;
             txtProdutoNome.Name = "txtProdutoNome";
             txtProdutoNome.Size = new Size(192, 26);
             txtProdutoNome.TabIndex = 99;
@@ -142,6 +145,7 @@
             // 
             txtProdutoCod.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoCod.Location = new Point(136, 144);
+            txtProdutoCod.MaxLength = 10;
             txtProdutoCod.Name = "txtProdutoCod";
             txtProdutoCod.Size = new Size(72, 26);
             txtProdutoCod.TabIndex = 4;

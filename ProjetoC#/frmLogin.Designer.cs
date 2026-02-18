@@ -61,6 +61,7 @@
             // 
             txtLogin.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtLogin.Location = new Point(102, 95);
+            txtLogin.MaxLength = 10;
             txtLogin.Name = "txtLogin";
             txtLogin.Size = new Size(164, 26);
             txtLogin.TabIndex = 1;
@@ -70,6 +71,7 @@
             // 
             txtSenha.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSenha.Location = new Point(102, 144);
+            txtSenha.MaxLength = 50;
             txtSenha.Name = "txtSenha";
             txtSenha.PasswordChar = '*';
             txtSenha.Size = new Size(164, 26);

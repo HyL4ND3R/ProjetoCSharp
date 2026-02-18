@@ -37,12 +37,9 @@ namespace ProjetoC_
             }
 
             // Reler o arquivo .config agora mesmo para garantir o valor atualizado
-            ConfigurationManager.RefreshSection("appSettings");
-            string urlAtualizada = ConfigurationManager.AppSettings["UrlApi"]; 
+            Global.RefreshSection();
+            _dbService._urlApi = Global.UrlApi;
 
-            // Se você usa uma classe de serviço, atualize a URL dela aqui
-            _dbService._urlApi = string.IsNullOrEmpty(urlAtualizada) ? "http://localhost:5288/api/database/executar" 
-                : urlAtualizada + "/api/database/executar";
             try
             {
                 // 2. Prepara os dados (Apenas SQL e Parametros)

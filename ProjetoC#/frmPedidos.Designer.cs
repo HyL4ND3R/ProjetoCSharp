@@ -95,6 +95,7 @@
             // 
             txtNomeCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNomeCliente.Location = new Point(192, 96);
+            txtNomeCliente.MaxLength = 200;
             txtNomeCliente.Name = "txtNomeCliente";
             txtNomeCliente.Size = new Size(260, 26);
             txtNomeCliente.TabIndex = 5;
@@ -131,6 +132,7 @@
             // 
             txtCodigo.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtCodigo.Location = new Point(112, 56);
+            txtCodigo.MaxLength = 10;
             txtCodigo.Name = "txtCodigo";
             txtCodigo.Size = new Size(72, 26);
             txtCodigo.TabIndex = 1;
@@ -279,6 +281,7 @@
             // 
             txtCodCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtCodCliente.Location = new Point(112, 96);
+            txtCodCliente.MaxLength = 10;
             txtCodCliente.Name = "txtCodCliente";
             txtCodCliente.Size = new Size(52, 26);
             txtCodCliente.TabIndex = 3;
@@ -396,6 +399,7 @@
             // 
             txtProdutoCod.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoCod.Location = new Point(113, 184);
+            txtProdutoCod.MaxLength = 10;
             txtProdutoCod.Name = "txtProdutoCod";
             txtProdutoCod.Size = new Size(73, 26);
             txtProdutoCod.TabIndex = 12;
@@ -416,6 +420,7 @@
             // 
             txtProdutoNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoNome.Location = new Point(214, 184);
+            txtProdutoNome.MaxLength = 200;
             txtProdutoNome.Name = "txtProdutoNome";
             txtProdutoNome.Size = new Size(278, 26);
             txtProdutoNome.TabIndex = 14;
@@ -435,6 +440,7 @@
             // 
             txtProdutoQtde.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoQtde.Location = new Point(113, 216);
+            txtProdutoQtde.MaxLength = 12;
             txtProdutoQtde.Name = "txtProdutoQtde";
             txtProdutoQtde.Size = new Size(88, 26);
             txtProdutoQtde.TabIndex = 15;
@@ -445,6 +451,7 @@
             // 
             txtProdutoValorUn.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoValorUn.Location = new Point(113, 248);
+            txtProdutoValorUn.MaxLength = 50;
             txtProdutoValorUn.Name = "txtProdutoValorUn";
             txtProdutoValorUn.Size = new Size(88, 26);
             txtProdutoValorUn.TabIndex = 16;
@@ -455,6 +462,7 @@
             // 
             txtProdutoValorTotal.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoValorTotal.Location = new Point(113, 280);
+            txtProdutoValorTotal.MaxLength = 100;
             txtProdutoValorTotal.Name = "txtProdutoValorTotal";
             txtProdutoValorTotal.Size = new Size(88, 26);
             txtProdutoValorTotal.TabIndex = 17;

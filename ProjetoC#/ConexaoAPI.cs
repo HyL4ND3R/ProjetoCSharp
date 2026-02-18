@@ -50,10 +50,14 @@ namespace ProjetoC_
         {
             get
             {
-                string url = ConfigurationManager.AppSettings["UrlApi"];
-                url += "/api/database/executar";
-                return string.IsNullOrEmpty(url) ? "http://localhost:5288/api/database/executar" : url;
+                string url = ConfigurationManager.AppSettings["UrlApi"] + "/api/database/executar";
+                return url;
             }
+        }
+
+        public static void RefreshSection()
+        {
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }
