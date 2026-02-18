@@ -471,7 +471,7 @@ namespace ProjetoC_
                 }
 
                 ModoConsultaPedido();
-                preencherCampos();
+                limparCamposItens();
             }
             catch (Exception ex)
             {
@@ -735,7 +735,7 @@ namespace ProjetoC_
 
                 ClienteService service = new ClienteService();
 
-                var cliente = await service.BuscarClientePorCodigo(codigo);
+                var cliente = await service.BuscarClienteAtivoPorCodigo(codigo);
 
                 if (cliente != null)
                 {
@@ -746,6 +746,8 @@ namespace ProjetoC_
                 else
                 {
                     MessageBox.Show("Código não encontrado.");
+                    txtCodCliente.Text = "";
+                    txtNomeCliente.Text = "";
                     txtCodCliente.Focus();
                 }
             }
@@ -765,6 +767,7 @@ namespace ProjetoC_
             if (e.KeyChar == (char)Keys.Enter)
             {
                 e.Handled = true; // Evita o som de alerta
+                if (MessageBox.Show("Confirma Gravação?", "Confirmação", MessageBoxButtons.YesNo) == DialogResult.No) return;
                 toolGravar_Click(sender, e); // Chama o método de gravação
             }
         }
@@ -793,7 +796,7 @@ namespace ProjetoC_
                 try
                 {
                     ProdutoService service = new ProdutoService();
-                    produto = await service.BuscarProdutoPorCodigo(codigo);
+                    produto = await service.BuscarProdutoAtivoPorCodigo(codigo);
                 }
                 catch (Exception ex)
                 {
@@ -810,6 +813,8 @@ namespace ProjetoC_
                 else
                 {
                     MessageBox.Show("Código não encontrado.");
+                    txtProdutoCod.Text = "";
+                    txtProdutoNome.Text = "";
                     txtProdutoCod.Focus();
                 }
             }
@@ -966,7 +971,7 @@ namespace ProjetoC_
             try
             {
                 var service = new ProdutoService();
-                listaPr = await service.CarregarProdutos();
+                listaPr = await service.CarregarProdutosAtivos();
             }
             catch (Exception ex)
             {
@@ -987,6 +992,7 @@ namespace ProjetoC_
                     txtProdutoCod.Text = prSelecionado.Codigo.ToString();
                     txtProdutoNome.Text = prSelecionado.Nome;
                     txtProdutoValorUn.Text = prSelecionado.Valor.ToString("F2");
+                    txtProdutoQtde.Focus();
                 }
             }
         }
@@ -997,7 +1003,7 @@ namespace ProjetoC_
             try
             {
                 var service = new ClienteService();
-                listaCl = await service.CarregarClientes();
+                listaCl = await service.CarregarClientesAtivos();
             }
             catch (Exception ex)
             {
@@ -1017,6 +1023,7 @@ namespace ProjetoC_
 
                     txtCodCliente.Text = clSelecionado.Codigo.ToString();
                     txtNomeCliente.Text = clSelecionado.Nome;
+                    dtpDataPedido.Focus();
                 }
             }
         }

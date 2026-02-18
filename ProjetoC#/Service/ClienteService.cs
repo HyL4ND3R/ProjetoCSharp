@@ -20,6 +20,17 @@ namespace ProjetoC_.Service
             return resultado;
         }
 
+        public async Task<List<Cliente>> CarregarClientesAtivos()
+        {
+
+            String query = "Select * from Cliente Where Inativo = 0 Order By Codigo Asc";
+            var parametros = new Dictionary<string, object>();
+
+            List<Cliente> resultado = await _dbService.ExecutarConsultaAsync<Cliente>(query, parametros);
+
+            return resultado;
+        }
+
         public async Task<Cliente> BuscarClientePorCodigo(int codigo)
         {
 
@@ -31,8 +42,31 @@ namespace ProjetoC_.Service
 
             List<Cliente> resultado = await _dbService.ExecutarConsultaAsync<Cliente>(query, parametros);
 
+            if (resultado.Count == 0) 
+            {
+                return null;
+            }
             return resultado[0];
         }
+
+        public async Task<Cliente> BuscarClienteAtivoPorCodigo(int codigo)
+        {
+
+            String query = "Select * from Cliente Where Codigo = @Codigo and Inativo = 0";
+            var parametros = new Dictionary<string, object>()
+            {
+                {"@Codigo",codigo}
+            };
+
+            List<Cliente> resultado = await _dbService.ExecutarConsultaAsync<Cliente>(query, parametros);
+
+            if (resultado.Count == 0)
+            {
+                return null;
+            }
+            return resultado[0];
+        }
+
 
         public async Task<int> InserirCliente(Cliente cliente)
         {

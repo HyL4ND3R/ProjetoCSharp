@@ -22,10 +22,38 @@ namespace ProjetoC_.Service
             return resultado;
         }
 
+        public async Task<List<Produto>> CarregarProdutosAtivos()
+        {
+            String query = "Select * from Produto where Inativo = 0 Order By Codigo Asc";
+            var parametros = new Dictionary<string, object>();
+
+            List<Produto> resultado = await _dbService.ExecutarConsultaAsync<Produto>(query, parametros);
+
+            if (resultado.Count == 0) return null;
+
+            return resultado;
+        }
+
         public async Task<Produto> BuscarProdutoPorCodigo(int codigo)
         {
 
             String query = "Select * from Produto Where Codigo = @Codigo";
+            var parametros = new Dictionary<string, object>()
+            {
+                {"@Codigo",codigo}
+            };
+
+            List<Produto> resultado = await _dbService.ExecutarConsultaAsync<Produto>(query, parametros);
+
+            if (resultado.Count == 0) return null;
+
+            return resultado[0];
+        }
+
+        public async Task<Produto> BuscarProdutoAtivoPorCodigo(int codigo)
+        {
+
+            String query = "Select * from Produto Where Codigo = @Codigo and Inativo = 0";
             var parametros = new Dictionary<string, object>()
             {
                 {"@Codigo",codigo}
