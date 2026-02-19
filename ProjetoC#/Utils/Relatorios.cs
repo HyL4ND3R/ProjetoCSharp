@@ -23,7 +23,7 @@ namespace ProjetoC_.Utils
         {
             // 1. Define o caminho do arquivo (Pasta Temporária)
             string caminhoPdf = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"Pedido_{pedido.Codigo}.pdf");
-            PdfFont boldFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+            PdfFont fBold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
 
             using (PdfWriter writer = new PdfWriter(caminhoPdf))
             {
@@ -36,7 +36,7 @@ namespace ProjetoC_.Utils
                     document.Add(new Paragraph("RESUMO DO PEDIDO")
                         .SetTextAlignment(TextAlignment.CENTER)
                         .SetFontSize(18)
-                        .SetFont(boldFont));
+                        .SetFont(fBold));
 
 
                     // Criamos uma tabela para organizar os dados do cabeçalho (2 colunas)
@@ -47,18 +47,18 @@ namespace ProjetoC_.Utils
                     headerTable.AddCell(new Cell().Add(new Paragraph($"Código: {pedido.Codigo}")).SetBorder(iText.Layout.Borders.Border.NO_BORDER));
                     headerTable.AddCell(new Cell().Add(new Paragraph($"Data: {pedido.DataPedido:dd/MM/yyyy}")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(iText.Layout.Borders.Border.NO_BORDER));
                     headerTable.AddCell(new Cell().Add(new Paragraph($"Cliente: {pedido.ClienteNome}")).SetBorder(iText.Layout.Borders.Border.NO_BORDER));
-                    headerTable.AddCell(new Cell().Add(new Paragraph($"Valor Total: {pedido.ValorTotal:C2}")).SetTextAlignment(TextAlignment.RIGHT).SetFont(boldFont).SetBorder(iText.Layout.Borders.Border.NO_BORDER));
+                    headerTable.AddCell(new Cell().Add(new Paragraph($"Valor Total: {pedido.ValorTotal:C2}")).SetTextAlignment(TextAlignment.RIGHT).SetFont(fBold).SetBorder(iText.Layout.Borders.Border.NO_BORDER));
 
                     document.Add(headerTable);
 
                     // --- CORPO (ITENS) ---
-                    document.Add(new Paragraph("ITENS DO PEDIDO").SetFont(boldFont).SetFontSize(12));
+                    document.Add(new Paragraph("ITENS DO PEDIDO").SetFont(fBold).SetFontSize(12));
 
                     // Tabela de itens (Colunas: Cod, Descrição, Qtde, Unit, Total)
                     Table table = new Table(UnitValue.CreatePercentArray(new float[] { 10, 45, 15, 15, 15 })).UseAllAvailableWidth();
 
                     // Estilo do Header da Tabela
-                    Cell headerCell(string texto) => new Cell().Add(new Paragraph(texto).SetFont(boldFont).SetFontColor(ColorConstants.WHITE)).SetBackgroundColor(ColorConstants.DARK_GRAY);
+                    Cell headerCell(string texto) => new Cell().Add(new Paragraph(texto).SetFont(fBold).SetFontColor(ColorConstants.WHITE)).SetBackgroundColor(ColorConstants.DARK_GRAY);
 
                     table.AddHeaderCell(headerCell("Cód."));
                     table.AddHeaderCell(headerCell("Descrição"));
