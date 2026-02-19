@@ -37,7 +37,7 @@
             // 
             txtUrl.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtUrl.Location = new Point(104, 40);
-            txtUrl.MaxLength = 500;
+            txtUrl.MaxLength = 200;
             txtUrl.Name = "txtUrl";
             txtUrl.Size = new Size(264, 26);
             txtUrl.TabIndex = 0;

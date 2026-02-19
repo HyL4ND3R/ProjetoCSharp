@@ -1325,7 +1325,5 @@ namespace ProjetoC_
                 _listaItensPedido[i].Item = i + 1;
             }
         }
-        //Ao informar cliente inexistente esta dando erro
-        //bloquear informar cliente inativo
     }
 }

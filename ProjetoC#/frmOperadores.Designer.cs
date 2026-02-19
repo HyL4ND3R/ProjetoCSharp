@@ -214,7 +214,7 @@
             // 
             txtNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNome.Location = new Point(112, 96);
-            txtNome.MaxLength = 200;
+            txtNome.MaxLength = 100;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(168, 26);
             txtNome.TabIndex = 12;
@@ -224,7 +224,7 @@
             // 
             txtSenha.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSenha.Location = new Point(112, 136);
-            txtSenha.MaxLength = 200;
+            txtSenha.MaxLength = 100;
             txtSenha.Name = "txtSenha";
             txtSenha.Size = new Size(168, 26);
             txtSenha.TabIndex = 13;

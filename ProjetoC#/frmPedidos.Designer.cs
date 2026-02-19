@@ -95,7 +95,7 @@
             // 
             txtNomeCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNomeCliente.Location = new Point(192, 96);
-            txtNomeCliente.MaxLength = 200;
+            txtNomeCliente.MaxLength = 100;
             txtNomeCliente.Name = "txtNomeCliente";
             txtNomeCliente.Size = new Size(260, 26);
             txtNomeCliente.TabIndex = 5;
@@ -420,7 +420,7 @@
             // 
             txtProdutoNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoNome.Location = new Point(214, 184);
-            txtProdutoNome.MaxLength = 200;
+            txtProdutoNome.MaxLength = 100;
             txtProdutoNome.Name = "txtProdutoNome";
             txtProdutoNome.Size = new Size(278, 26);
             txtProdutoNome.TabIndex = 14;
@@ -440,7 +440,7 @@
             // 
             txtProdutoQtde.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoQtde.Location = new Point(113, 216);
-            txtProdutoQtde.MaxLength = 12;
+            txtProdutoQtde.MaxLength = 10;
             txtProdutoQtde.Name = "txtProdutoQtde";
             txtProdutoQtde.Size = new Size(88, 26);
             txtProdutoQtde.TabIndex = 15;
@@ -451,7 +451,7 @@
             // 
             txtProdutoValorUn.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoValorUn.Location = new Point(113, 248);
-            txtProdutoValorUn.MaxLength = 50;
+            txtProdutoValorUn.MaxLength = 20;
             txtProdutoValorUn.Name = "txtProdutoValorUn";
             txtProdutoValorUn.Size = new Size(88, 26);
             txtProdutoValorUn.TabIndex = 16;
@@ -462,7 +462,7 @@
             // 
             txtProdutoValorTotal.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoValorTotal.Location = new Point(113, 280);
-            txtProdutoValorTotal.MaxLength = 100;
+            txtProdutoValorTotal.MaxLength = 200;
             txtProdutoValorTotal.Name = "txtProdutoValorTotal";
             txtProdutoValorTotal.Size = new Size(88, 26);
             txtProdutoValorTotal.TabIndex = 17;

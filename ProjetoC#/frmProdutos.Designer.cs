@@ -220,7 +220,7 @@
             // 
             txtNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNome.Location = new Point(112, 96);
-            txtNome.MaxLength = 200;
+            txtNome.MaxLength = 100;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(224, 26);
             txtNome.TabIndex = 20;
@@ -240,7 +240,7 @@
             // 
             txtValor.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtValor.Location = new Point(112, 136);
-            txtValor.MaxLength = 50;
+            txtValor.MaxLength = 20;
             txtValor.Name = "txtValor";
             txtValor.Size = new Size(96, 26);
             txtValor.TabIndex = 22;

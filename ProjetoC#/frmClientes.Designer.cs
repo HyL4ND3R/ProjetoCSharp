@@ -69,7 +69,7 @@
             // 
             txtNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNome.Location = new Point(112, 96);
-            txtNome.MaxLength = 200;
+            txtNome.MaxLength = 50;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(240, 26);
             txtNome.TabIndex = 30;
@@ -267,7 +267,7 @@
             // 
             txtDocumento.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtDocumento.Location = new Point(200, 136);
-            txtDocumento.MaxLength = 200;
+            txtDocumento.MaxLength = 20;
             txtDocumento.Name = "txtDocumento";
             txtDocumento.Size = new Size(152, 26);
             txtDocumento.TabIndex = 36;
@@ -287,7 +287,7 @@
             // 
             txtTelefone.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtTelefone.Location = new Point(112, 176);
-            txtTelefone.MaxLength = 200;
+            txtTelefone.MaxLength = 15;
             txtTelefone.Name = "txtTelefone";
             txtTelefone.Size = new Size(160, 26);
             txtTelefone.TabIndex = 38;

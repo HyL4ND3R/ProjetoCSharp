@@ -117,7 +117,7 @@
             // 
             txtNomeCliente.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNomeCliente.Location = new Point(236, 104);
-            txtNomeCliente.MaxLength = 200;
+            txtNomeCliente.MaxLength = 100;
             txtNomeCliente.Name = "txtNomeCliente";
             txtNomeCliente.Size = new Size(192, 26);
             txtNomeCliente.TabIndex = 97;
@@ -126,7 +126,7 @@
             // 
             txtProdutoNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtProdutoNome.Location = new Point(236, 144);
-            txtProdutoNome.MaxLength = 200;
+            txtProdutoNome.MaxLength = 100;
             txtProdutoNome.Name = "txtProdutoNome";
             txtProdutoNome.Size = new Size(192, 26);
             txtProdutoNome.TabIndex = 99;
