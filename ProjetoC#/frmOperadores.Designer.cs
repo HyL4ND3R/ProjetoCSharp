@@ -226,6 +226,7 @@
             txtSenha.Location = new Point(112, 136);
             txtSenha.MaxLength = 100;
             txtSenha.Name = "txtSenha";
+            txtSenha.PasswordChar = '*';
             txtSenha.Size = new Size(168, 26);
             txtSenha.TabIndex = 13;
             txtSenha.KeyPress += txtSenha_KeyPress;
@@ -291,7 +292,7 @@
             MaximizeBox = false;
             Name = "frmOperadores";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "frmOperadores";
+            Text = "Operadores";
             Load += frmOperadores_Load;
             KeyDown += fromOperadores_KeyDown;
             toolStrip.ResumeLayout(false);

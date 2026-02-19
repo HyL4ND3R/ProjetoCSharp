@@ -534,7 +534,7 @@
             Controls.Add(toolStrip);
             KeyPreview = true;
             Name = "frmPedidos";
-            Text = "frmPedido";
+            Text = "Pedido";
             Load += frmProdutos_Load;
             KeyDown += frmPedidos_KeyDown;
             toolStrip.ResumeLayout(false);

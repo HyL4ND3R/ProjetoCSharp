@@ -92,7 +92,7 @@
             KeyPreview = true;
             Name = "frmListaPesquisa";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "frmListaPesquisa";
+            Text = "Lista de Pesquisa";
             KeyDown += frmListaPesquisa_KeyDown;
             ((System.ComponentModel.ISupportInitialize)dgvListaPesquisa).EndInit();
             ResumeLayout(false);

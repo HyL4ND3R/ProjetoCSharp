@@ -203,7 +203,7 @@
             Controls.Add(lblDataInicial);
             Controls.Add(dtpDataInicial);
             Name = "frmRelPedidos";
-            Text = "frmRelPedidos";
+            Text = "Relatório de Pedidos";
             Load += frmRelPedidos_Load;
             ResumeLayout(false);
             PerformLayout();
