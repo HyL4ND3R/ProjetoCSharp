@@ -11,7 +11,7 @@ namespace ProjetoC_
     public partial class frmLogin : Form
     {
 
-        // Instancia o serviÁo
+        // Instancia o servi√ßo
         private readonly DatabaseService _dbService;
         public static Operador? operadorLogado { get; private set; }
 
@@ -24,15 +24,15 @@ namespace ProjetoC_
 
         private async void btnEntrar_Click(object sender, EventArgs e)
         {
-            // 1. ValidaÁ„o Visual
+            // 1. Valida√ß√£o Visual
             if (string.IsNullOrWhiteSpace(txtLogin.Text) || string.IsNullOrWhiteSpace(txtSenha.Text))
             {
-                MessageBox.Show("Preencha usu·rio e senha.");
+                MessageBox.Show("Preencha usu√°rio e senha.");
                 return;
             }
             else if (int.TryParse(txtLogin.Text, out int codigo) == false)
             {
-                MessageBox.Show("Login Inv·lido.");
+                MessageBox.Show("Login Inv√°lido.");
                 return;
             }
 
@@ -55,9 +55,9 @@ namespace ProjetoC_
                 btnEntrar.Enabled = false;
                 btnEntrar.Text = "Verificando...";
 
-                // 4. A M·gica: Uma ˙nica linha chama o serviÁo
-                // Note o <Operador>: Isso diz ao serviÁo para devolver uma lista de Operadores
-                List<Cliente> resultado = await _dbService.ExecutarConsultaAsync<Cliente>(query, parametros);
+                // 4. A M√°gica: Uma √∫nica linha chama o servi√ßo
+                // Note o <Operador>: Isso diz ao servi√ßo para devolver uma lista de Operadores
+                List<Operador> resultado = await _dbService.ExecutarConsultaAsync<Operador>(query, parametros);
 
                 // 5. Verifica o resultado
                 if (resultado != null && resultado.Count > 0)
@@ -69,7 +69,7 @@ namespace ProjetoC_
                 }
                 else
                 {
-                    MessageBox.Show("Usu·rio ou senha inv·lidos.");
+                    MessageBox.Show("Usu√°rio ou senha inv√°lidos.");
                 }
             }
             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace ProjetoC_
             }
             finally
             {
-                // Restaura o bot„o mesmo se der erro
+                // Restaura o bot√£o mesmo se der erro
                 btnEntrar.Enabled = true;
                 btnEntrar.Text = "Entrar";
             }
@@ -86,7 +86,7 @@ namespace ProjetoC_
 
         private void txtLogin_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permite apenas n˙meros e controle (backspace)
+            // Permite apenas n√∫meros e controle (backspace)
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true; // Ignora a tecla pressionada
@@ -113,7 +113,7 @@ namespace ProjetoC_
             {
                 using (var frm = new frmConfigServidor())
                 {
-                    // Ao abrir a tela, j· mostra o que est· configurado atualmente
+                    // Ao abrir a tela, j√° mostra o que est√° configurado atualmente
 
                     frm.txtUrl.Text = ConfigurationManager.AppSettings["UrlApi"];
                     frm.ShowDialog();
